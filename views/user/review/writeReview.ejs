@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WriteReview</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/1853ff613c.js" crossorigin="anonymous"></script>
+
+</head>
+
+  <body>
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">리뷰 작성하기</h4>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+            <div class="form-group">
+              <label for="rating" class="control-label">별점:</label>
+              <a href="#"><i class="fas fa-star" style="color: tomato;"></i></a>
+              <a href="#"><i class="fas fa-star" ></i></a>
+              <a href="#"><i class="fas fa-star" ></i></a>
+              <a href="#"><i class="fas fa-star" ></i></a>
+              <a href="#"><i class="fas fa-star" ></i></a>
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="control-label">내용:</label>
+              <textarea class="form-control" id="message-text" maxlength="100" placeholder="후기를 입력해 주세요""></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeBtn">Close</button>
+          <button type="submit" class="btn btn-primary" data-dismiss="modal" id="writeBtn">작성하기</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  $(".close").click(() => {
+    self.close();
+  });
+  $("#closeBtn").click(() => {
+    self.close();
+  });
+</script>
