@@ -77,10 +77,18 @@
       drawMap(results[0]);
     },
   });
+
+  // 리뷰보기 눌렀을때 휴게소 이름 넘겨주기
+  $("#btnReview").click(function () {
+    console.log(areaName);
+    window.location.href = "/readReview?area_nm=" + areaName;
+  });
+
   // 주문버튼 눌렀을때 휴게소 이름 넘겨주기
   $("#btnMenu").click(function () {
     window.location.href = "/menulist?area_nm=" + areaName;
   });
+  
   // qs로 보내준 데이터를(? 이후 데이터) key : value 방식으로 자바스크립트obj 로 풀어주는 함수
   function getQueryStringObject() {
     var a = window.location.search.substr(1).split("&");

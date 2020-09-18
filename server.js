@@ -55,6 +55,16 @@ app.get("/menulist", function (request, response) {
   response.render("user/home/menulist");
 });
 
+//리뷰 정보 화면
+app.get("/readReview", function(request, response){
+  response.render("user/review/readReview");
+});
+
+//리뷰 쓰기 화면
+app.get("/writeReview", function(request, response){
+  response.render("user/review/writeReview");
+});
+
 //메뉴고르고 결제할때 화면
 app.get("/payment", function (request, response) {
   response.render("user/home/payment");
