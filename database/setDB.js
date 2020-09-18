@@ -4,8 +4,8 @@ const insertMenu = require("./insert/insertMenu.js");
 const mysql = require("mysql");
 
 // local DB 정보
-const password = "12qw!@QW"; // 로컬 DB 비밀번호
-const name = "menutest"; // 생성한 스키마 이름
+const password = "dksgkdms"; // 로컬 DB 비밀번호
+const name = "kisa-hackathon"; // 생성한 스키마 이름
 
 // DB connection
 const connection = mysql.createConnection({
