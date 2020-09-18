@@ -8,10 +8,10 @@ const { send } = require("process");
 
 // DB connection
 const connection = mysql.createConnection({
-  host: "db-4s657.cdb.ntruss.com",
+  host: "db-4s657.pub-cdb.ntruss.com",
   user: "asap_user",
   password: "ASAP1!2@",
-  database: "base",
+  database: "temp",
   dateStrings: "date",
 });
 
@@ -32,35 +32,7 @@ app.use(express.static(__dirname));
 
 //사용자 측 홈 화면
 app.get("/home", function (req, res) {
-  res.render("home");
-});
-
-// 사용자 앱에서 휴게서 위도,경도 요청시 값 보내주기 - 홈 화면(지도, 리스트)
-app.post("/requestRestAreaLatLong", function (req, res) {
-  connection.query("SELECT area_code, area_nm, road_nm, latitude, longitude FROM restarea_info_tb", function (
-    error,
-    result,
-    fields
-  ) {
-    if (error) {
-      throw error;
-    } else {
-      res.send(JSON.stringify(result));
-    }
-  });
-
-clear});
-
-// 사용자 앱에서 휴게소 하나 선택시, 휴게소 정보 값 보내주기 - 휴게소 정보 화면(휴게소 정보)
-app.post("/requestRestAreaInfo", function (req, res) {
-  const areaCode = req.body.area_code;
-  connection.query("SELECT * FROM restarea_info_tb WHERE area_code = ?", [areaCode], function (error, result, fields) {
-    if (error) {
-      throw error;
-    } else {
-      res.send(JSON.stringify(result));
-    }
-  });
+  res.render("user/home");
 });
 
 // 휴게소 측 홈 화면
@@ -190,3 +162,32 @@ app.post('/adminDeleteMenuInfo', function(req, res) {
     res.send(flag);
   });
 })
+
+
+// 사용자 앱에서 휴게서 위도,경도 요청시 값 보내주기 - 홈 화면(지도, 리스트)
+app.post("/requestRestAreaLatLong", function (req, res) {
+  connection.query("SELECT area_code, area_nm, road_nm, latitude, longitude FROM restarea_info_tb", function (
+    error,
+    result,
+    fields
+  ) {
+    if (error) {
+      throw error;
+    } else {
+      res.send(JSON.stringify(result));
+    }
+  });
+
+clear});
+
+// 사용자 앱에서 휴게소 하나 선택시, 휴게소 정보 값 보내주기 - 휴게소 정보 화면(휴게소 정보)
+app.post("/requestRestAreaInfo", function (req, res) {
+  const areaCode = req.body.area_code;
+  connection.query("SELECT * FROM restarea_info_tb WHERE area_code = ?", [areaCode], function (error, result, fields) {
+    if (error) {
+      throw error;
+    } else {
+      res.send(JSON.stringify(result));
+    }
+  });
+});

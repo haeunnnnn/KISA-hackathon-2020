@@ -106,6 +106,28 @@ function createFoodInfo (connection) {
     })
 }
 
+// food_info_tb
+function createReviewInfo (connection) {
+    return new Promise( (resolve, reject) => {
+        connection.query(
+        `CREATE TABLE review_info_tb (
+            order_no varchar(15) not null,
+            orderer_pn varchar(13) not null,
+            area_nm varchar(30) character set utf8 not null,
+            score decimal(2,1) not null,
+            comments varchar(100) character set utf8,             
+            write_time datetime default now()
+        )`,
+        function(error, result, fields) {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        }); 
+    })
+}
+
 
 
 // DB create
@@ -115,6 +137,7 @@ async function createQuery( connection ) {
     const b = await createOrderInfo(connection);        // 주문내역 TB
     const c = await createOrderFoodInfo(connection);    // 주문음식 정보 TB
     const d = await createFoodInfo(connection);         // 음식 정보 TB
+    const e = await createReviewInfo(connection);       // 리뷰 정보 TB
 
     // console.log(a, b, c, d);
     // connection end
