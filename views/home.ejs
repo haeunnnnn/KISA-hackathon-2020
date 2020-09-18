@@ -82,7 +82,7 @@
         }
         
         var map = showMap(latlng);
-        showMarker(map, latlng);
+        showUserMarker(map, latlng);
 
         // T map 도로명 API
         ajax({
@@ -106,40 +106,152 @@
                 console.log("rName : ",rName);
                 document.getElementById('roadNm').innerHTML = rName;
 
-                // ajax({
-                //     url: '/requestRestAreaLatLong',
-                //     type: 'POST',
-                //     async: false,
-                //     // data : {
-                //     //     road_nm : rName,
-                //     // },
-                //     success: function (data) {
-                //         const results = JSON.parse(data);
-                //         var map = drawRestAreaMarker(results);
-                //         drawUserMarker(results, map, latlng);
-                //     }
-                // });
+                ajax({
+                    url: '/requestRestAreaLatLong',
+                    type: 'POST',
+                    async: false,
+
+                    success: function (data) {
+                        const results = JSON.parse(data);
+                        drawRestAreaMarker(results, map);
+                    }
+                });
             },
             error: function (request, status, error) {
                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }
         });
     }
-    
+
+    // 휴게소 데이터 받아와서 휴게소 마커 그리기
+    function drawRestAreaMarker(data, map) {
+        var data = data;
+        var HOME_PATH = window.HOME_PATH || '.';
+
+        var bounds = map.getBounds(),
+            southWest = bounds.getSW(),
+            northEast = bounds.getNE(),
+            lngSpan = northEast.lng() - southWest.lng(),
+            latSpan = northEast.lat() - southWest.lat();
+
+        var markers = [],
+            infoWindows = [];
+
+        for (var i in data) {
+
+            var areaInfo = {
+                name: data[i].area_nm,
+                code: data[i].area_code,
+                latitude: data[i].latitude,
+                longitude: data[i].longitude,
+            }
+
+            var position = new naver.maps.LatLng(areaInfo.latitude, areaInfo.longitude);
+
+            var marker = new naver.maps.Marker({
+                map: map,
+                position: position,
+            });
+
+            var infoWindow = new naver.maps.InfoWindow({
+                content:
+                `<div class="container text-left" style="width: 160px;">    
+                        <table class="table table-hover">
+                            <tr>    
+                                <td><strong>${areaInfo.name}휴게소</strong></td>
+                            </tr>
+                            <tr>    
+                                <td><div class="text-center">
+                                    <form action="/restAreaInfo">
+                                        <input style="display:none" id = "area_code" name = "area_code" value = ${areaInfo.code}>
+                                        <input type="submit" class="btn btn-info" value='휴게소정보'>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>    
+                    </div>`
+            });
+
+            markers.push(marker);
+            infoWindows.push(infoWindow);
+        };
+
+        naver.maps.Event.addListener(map, 'idle', function() {
+            updateMarkers(map, markers);
+        });
+
+        function updateMarkers(map, markers) {
+
+            var mapBounds = map.getBounds();
+            var marker, position;
+
+            for (var i = 0; i < markers.length; i++) {
+
+                marker = markers[i]
+                position = marker.getPosition();
+
+                if (mapBounds.hasLatLng(position)) {
+                    showMarker(map, marker);
+                } else {
+                    hideMarker(map, marker);
+                }
+            }
+        }
+
+        function showMarker(map, marker) {
+
+            if (marker.setMap()) return;
+            marker.setMap(map);
+        }
+
+        function hideMarker(map, marker) {
+
+            if (!marker.setMap()) return;
+            marker.setMap(null);
+        }
+
+        // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
+        function getClickHandler(seq) {
+            return function(e) {
+                var marker = markers[seq],
+                    infoWindow = infoWindows[seq];
+
+                if (infoWindow.getMap()) {
+                    infoWindow.close();
+                } else {
+                    infoWindow.open(map, marker);
+                }
+            }
+        }
+
+        //마커 클릭이벤트 추가
+        for (var i=0, ii=markers.length; i<ii; i++) {
+            naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+        }
+
+    }
+
     //지도 띄우기 => 위도, 경도 parameter
     function showMap(latlng){
         var mapOptions = {
         center: new naver.maps.LatLng(latlng.lat, latlng.lon),
-        zoom: 10
+        zoom: 13
         };
         var map = new naver.maps.Map('NaverMap', mapOptions);
         return map;
     }
     
-    function showMarker(map, latlng){
+    //사용자 위치 마커 띄우기
+    function showUserMarker(map, latlng){
+        var icon = {
+            content : `<i class="fas fa-car-side fa-2x"></i>`,
+            size: new naver.maps.Size(70, 70),
+            anchor: new naver.maps.Point(0, 0)
+        };
         var marker = new naver.maps.Marker({
             position: new naver.maps.LatLng(latlng.lat, latlng.lon),
-            map: map
+            map: map,
+            icon: icon
         });
     }
 
