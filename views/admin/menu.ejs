@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>휴게소 관리자 페이지</title>
+    <!-- <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Product Admin - Dashboard HTML Template</title>
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/templatemo-style.css"> -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/1853ff613c.js" crossorigin="anonymous"></script>
+</head>
+
+<body id="reportsPage">
+    <div id="home">
+        <!-- 상단(타이틀,네비게이터) -->
+        <nav>
+            <div>
+                <h1>휴게소 관리 페이지</h1>
+            </div>
+            <div>
+                <a style='padding-right: 20px;'><span onclick="window.location.href = '/admin'">주문내역</span></a>
+                <a style='padding-right: 20px;'><span onclick="window.location.href = '/menu'">메뉴관리</span></a>
+            </div>
+        </nav>
+
+        <!-- 중단(내용) -->
+        <div>
+            <!-- 행(row) 시작 -->
+            <div>
+                <!-- 행 내용(row content) 시작 -->
+                <div>
+                    <div>
+                        <div>
+                            <div>
+                                <h2>메뉴 관리</h2>
+                            </div>
+                            <div>
+                                <select id='areaList'>
+                                    <option value='all' selected='selected'>전체</option>
+                                </select>
+                                <!-- 추가는 조회되기 전까지 disable / 확인은 추가 버튼 누르기 전까지 disable -->
+                                <button onclick="addMenu()">추가</button>
+                            </div>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 20%;">NO</th>
+                                    <th scope="col" style="width: 30%;">FOOD NAME</th>
+                                    <th scope="col" style="width: 30%;">FOOD COST</th>
+                                    <th scope="col" style="width: 10%;"></th>
+                                    <th scope="col" style="width: 10%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 하단 -->
+        <footer>
+            <div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- https://jquery.com/download/ -->
+<script src="js/moment.min.js"></script>
+<!-- https://momentjs.com/ -->
+<script src="js/Chart.min.js"></script>
+<!-- http://www.chartjs.org/docs/latest/ -->
+<script src="js/bootstrap.min.js"></script>
+<!-- https://getbootstrap.com/ -->
+<script src="js/tooplate-scripts.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<!-- [운영자] - 휴게소 종류 셀렉트박스 값 -->
+<script>
+    $.ajax({
+        url: 'adminShowAreaList',
+        type: 'POST',
+        success: function (data) {
+            const result = JSON.parse(data);
+            addSelectOption(result);
+        }
+    })
+
+    // 셀렉트박스 리스트 아이템 붙이기
+    function addSelectOption(data) {
+        const selectItem = document.getElementById('areaList');
+        for(var i=0; i < data.length; i++) {
+            console.log(data[i]);
+            var optionItem = document.createElement('option');
+            optionItem.innerHTML = data[i].area_nm;
+            optionItem.value = data[i].area_nm;
+            selectItem.appendChild(optionItem);
+        }
+    }
+</script>
+
+<!-- [운영자] - 휴게소에 들어온 주문내역 DB에 접근해서 Table 형태로 그리기 -->
+<script>
+    const ajax = $.ajax;
+    var area_nm = '';
+    var food_code = '';
+    $('#areaList').change(function() {
+        area_nm = $('#areaList option:selected').val();
+        console.log('selected:',area_nm);
+
+        clearTable();
+        ajaxFunc(area_nm);
+    })
+
+    // ajax 통신 부분
+    function ajaxFunc(area_nm) {
+        ajax({
+            url: 'adminShowMenuList',
+            type: 'POST',
+            data: {
+                area_nm : area_nm
+            },
+            success: function (data) {
+                console.log('draw table start!');
+                if(data.length != 0) {
+                    const jsonData = JSON.parse(data);
+                    drawTable(jsonData);
+                }
+            }
+        })
+    }
+
+    // 이부분은 나중에 주문내역 보이도록 현재는 휴게소 정보로 나오도록 일단 해둠 (수정할 것)
+    function drawTable(data) {
+        const oldChild = document.querySelector('tbody');
+        console.log(oldChild);
+        for (var i = 0; i < data.length; i++) {
+            console.log(data[i]);
+            let flag, text;
+            var tr = document.createElement('tr');
+            var td0 = document.createElement('td');
+            var td1 = document.createElement('td');
+            var td2 = document.createElement('td');
+            var td3 = document.createElement('td');
+
+            td0.innerHTML = data[i].food_code.substr(7,3);
+            td1.innerHTML = data[i].food_nm;
+            td2.innerHTML = data[i].food_price;
+            td3.innerHTML = `<button onclick="deleteMenu(this)">삭제</button>`;    // 눌르면 주문 상세내용 나옴
+
+            tr.appendChild(td0);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+
+            oldChild.appendChild(tr);
+        }
+        // 일단 어거지로
+        food_code = data[data.length-1].food_code;
+    }
+
+    // 조회조건이 변경되면 테이블 밀어야함
+    function clearTable() {
+        const oldChild = document.querySelector('tbody');
+        // 기존 테이블 내용 삭제
+        while ( oldChild.hasChildNodes() ) { 
+            oldChild.removeChild( oldChild.firstChild );
+        }
+    }
+
+    // 추가버튼 이벤트
+    function addMenu() {
+        window.open(`./addMenuPopup?area_nm=${area_nm}&food_code=${food_code}`,"open","toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=800, height=400");
+    }
+
+    // 삭제버튼 이벤트
+    function deleteMenu(btn) {
+        const food_name = btn.parentNode.parentElement.children[1].innerText;
+
+        ajax({
+            url: 'adminDeleteMenuInfo',
+            type: 'POST',
+            data: {
+                area_name: area_nm,
+                food_name: food_name
+            },
+            success: function(data) {
+                console.log(data);
+                if(data == 'Success') {
+                    alert('메뉴를 삭제했습니다.');
+                    location.href = '/menu';
+                } else {
+                    alert('[ERROR]메뉴가 삭제되지 않았습니다')
+                }
+            }
+        });
+    }
+   
+</script>
