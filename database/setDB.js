@@ -4,6 +4,7 @@ const insertMenu = require("./insert/insertMenu.js");
 const mysql = require("mysql");
 
 // local DB 정보
+
 const password = "ASAP1!2@"; // 로컬 DB 비밀번호
 const name = "mysql-db"; // 생성한 스키마 이름
 

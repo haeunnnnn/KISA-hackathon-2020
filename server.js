@@ -30,6 +30,11 @@ app.use(
 // 이 과정을 거쳐야 내부폴더에 있는 파일을 접근할 수 있음
 app.use(express.static(__dirname));
 
+//사용자 측 홈 화면
+app.get("/home", function (req, res) {
+  res.render("home");
+});
+
 // 휴게소 측 홈 화면
 app.get("/admin", function (req, res) {
   res.render("admin/admin");
