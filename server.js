@@ -8,10 +8,10 @@ const { send } = require("process");
 
 // DB connection
 const connection = mysql.createConnection({
-  host: "db-4s451.pub-cdb.ntruss.com",
-  user: "asap",
+  host: "db-4s657.cdb.ntruss.com",
+  user: "asap_user",
   password: "ASAP1!2@",
-  database: "mysql-db",
+  database: "base",
   dateStrings: "date",
 });
 
