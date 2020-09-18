@@ -42,6 +42,18 @@
     <div style="text-align: center;">
         <h4><i class="fas fa-map-marker-alt" style="font-size:25px"><span id="roadNm"></span></i> 근처 휴게소 목록</h4>
     </div>
+
+    <div class="list-group" id='restareaList' style="margin:20px">
+        <!-- <form id='formListItems' > -->
+            <div id='listItems'>
+                
+            </div>
+            <div class="text-center" style="padding-top:20px;padding-bottom:50px">
+                <button id='btnShowInfo' onclick="showAreaInfo(this)" class="btn btn-info">정보보기</button>
+                <button id='btnShowMenu'' onclick="showAreaInfo(this)" class="btn btn-info">메뉴보기</button>
+            </div>
+        <!-- </form> -->
+    </div>
 </body>
 
 <script>
@@ -114,6 +126,7 @@
                     success: function (data) {
                         const results = JSON.parse(data);
                         drawRestAreaMarker(results, map);
+                        drawList(results, latlng);
                     }
                 });
             },
@@ -253,6 +266,95 @@
             map: map,
             icon: icon
         });
+    }
+
+    // 휴게소 목록 리스트 그리기
+    function drawList(results, currentPos) {
+        var iValue = rName.indexOf("고속도로");
+        var html = '';
+
+        if (iValue != -1) {
+            rName = rName.substring(0, iValue);
+        }
+
+        console.log(rName);
+        var result_distance = new Array(results.Size);
+
+        for (i in results) {
+            var restArea_roadName = results[i].road_nm;
+            var new_roadName = restArea_roadName.substring(0, restArea_roadName.length - 1);
+            if (new_roadName == rName) {
+                var distance = {
+                    lat: results[i].latitude,
+                    lon: results[i].longitude,
+                }
+                result_distance[i] = new Array(2);
+                var dis = computeDistance(currentPos, distance);
+                result_distance[i] = [dis, i];
+                results[i].road_nm = restArea_roadName;
+            }
+            
+            result_distance.sort(sortFunction);
+            
+            function sortFunction(a, b) {
+                return (a[0] < b[0]) ? -1 : 1;
+            }
+        }
+        
+        for (var i = 0; i < 6; i++) {
+            var idx = result_distance[i][1];
+            html += `<a class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <strong>${results[idx].area_nm}휴게소</strong>까지 약 <strong>${result_distance[i][0].toFixed(2)}</strong> KM
+                            </div>
+                            <div class="col-xs-2">
+                                <input type="radio" name="area_code" value="${results[idx].area_code}&${results[idx].area_nm}">
+                            </div>
+                        </div>
+                    </a>`
+                }
+        document.getElementById('listItems').innerHTML = html;
+    }
+
+    // 내부적으로 현재위치에서 휴게소까지의 거리 계산 후 배열 리턴
+    function computeDistance(startCoords, destCoords) {
+        var startLatRads = degreesToRadians(startCoords.lat);
+        var startLongRads = degreesToRadians(startCoords.lon);
+        var destLatRads = degreesToRadians(destCoords.lat);
+        var destLongRads = degreesToRadians(destCoords.lon);
+        var Radius = 6371; //지구의 반경(km)
+        var distance = Math.acos(Math.sin(startLatRads) * Math.sin(destLatRads) +
+            Math.cos(startLatRads) * Math.cos(destLatRads) *
+            Math.cos(startLongRads - destLongRads)) * Radius;
+        return distance;
+    }
+    
+    // 원 뭐 반환함
+    function degreesToRadians(degrees) {
+        radians = (degrees * Math.PI) / 180;
+        return radians;
+    }
+
+    // 정보보기, 메뉴보기 버튼 클릭시 이벤트처리 및 예외처리
+    function showAreaInfo(btn) {
+        const checkedArea = $("input:radio[name=area_code]:checked").val();
+        console.log(checkedArea);
+        
+        if(checkedArea == undefined) {
+            alert('휴게소를 선택하세요');
+        } else {
+            let code = checkedArea.substring(0, checkedArea.indexOf('&'));
+            let name = checkedArea.substring(checkedArea.indexOf('&')+1, checkedArea.length);
+            console.log(code,name);
+
+            const btnId = btn.id;
+            if(btn.id == 'btnShowInfo') {
+                window.location.href = `/restAreaInfo?area_code=${code}`;
+            } else {
+                window.location.href = `/menuList?area_nm=${name}`;
+            }
+        }
     }
 
 </script>
