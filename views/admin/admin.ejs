@@ -93,7 +93,7 @@
 <!-- [운영자] - 휴게소 종류 셀렉트박스 값 -->
 <script>
     $.ajax({
-        url: 'requestRestAreaLatLong',
+        url: 'adminShowAreaList',
         type: 'POST',
         success: function (data) {
             const result = JSON.parse(data);
@@ -130,7 +130,7 @@
     // ajax 통신 부분
     function ajaxFunc(area_nm) {
         ajax({
-            url: 'adminRequestOrderList',
+            url: 'adminShowOrderList',
             type: 'POST',
             data: {
                 area_nm : area_nm
@@ -201,7 +201,6 @@
         const orderNo = btn.parentNode.parentNode.childNodes[2].innerHTML;
         openWin(orderNo);
     }
-
 
     // 주문 확인 버튼 이벤트
     function checkOrder(btn) {
