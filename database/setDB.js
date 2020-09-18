@@ -4,13 +4,14 @@ const insertMenu = require("./insert/insertMenu.js");
 const mysql = require("mysql");
 
 // local DB 정보
-const password = "dksgkdms"; // 로컬 DB 비밀번호
-const name = "kisa-hackathon"; // 생성한 스키마 이름
+
+const password = "ASAP1!2@"; // 로컬 DB 비밀번호
+const name = "mysql-db"; // 생성한 스키마 이름
 
 // DB connection
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
+  host: "db-4s451.pub-cdb.ntruss.com",
+  user: "asap",
   password: password,
   database: name,
 });
