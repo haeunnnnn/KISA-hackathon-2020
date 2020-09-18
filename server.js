@@ -8,10 +8,10 @@ const { send } = require("process");
 
 // DB connection
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "dksgkdms",
-  database: "kisa-hackathon",
+  host: "db-4s451.pub-cdb.ntruss.com",
+  user: "asap",
+  password: "ASAP1!2@",
+  database: "mysql-db",
   dateStrings: "date",
 });
 
@@ -48,7 +48,8 @@ app.post("/requestRestAreaLatLong", function (req, res) {
       res.send(JSON.stringify(result));
     }
   });
-});
+
+clear});
 
 // 사용자 앱에서 휴게소 하나 선택시, 휴게소 정보 값 보내주기 - 휴게소 정보 화면(휴게소 정보)
 app.post("/requestRestAreaInfo", function (req, res) {
@@ -110,7 +111,7 @@ app.post("/adminShowOrderList", function(req, res) {
       console.log(result);
       res.send(JSON.stringify(result));
     }
-  })
+  });
 })
 
 
@@ -125,7 +126,7 @@ app.post("/adminUpdateOrderInfo", function(req, res) {
     } else {
       console.log(result);
     }
-  })
+  });
 })
 
 // admin 에서 휴게소이름에 따라 메뉴리스트 보여주기
@@ -139,7 +140,7 @@ app.post("/adminShowMenuList", function(req, res) {
       console.log(result);
       res.send(JSON.stringify(result));
     }
-  })
+  });
 })
 
 
@@ -168,7 +169,7 @@ app.post('/adminAddMenu', function(req, res) {
       flag = 'Success';
     }
     res.send(flag);
-  })
+  });
 })
 
 // admin에서 기존 메뉴 삭제
@@ -187,5 +188,5 @@ app.post('/adminDeleteMenuInfo', function(req, res) {
       console.log(result);
     }
     res.send(flag);
-  })
+  });
 })
