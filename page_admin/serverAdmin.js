@@ -55,6 +55,10 @@ app.get("/addMenuPopup", function (req, res) {
   res.render("./addMenuPopup");
 });
 
+// 결제 상세
+app.get("/orderDetail", function (req, res) {
+  res.render("./orderDetail");
+});
 
 // admin에서 휴게소 목록리스트 보여주기
 app.post("/adminShowAreaList", function (req, res) {
@@ -162,5 +166,18 @@ app.post('/adminDeleteMenuInfo', function(req, res) {
   });
 })
 
+
+// 주문번호 받아서 주문상세 내역 반환
+app.post("/requestOrderInfo", function (req, res) {
+  const order_no = req.body.order_no;
+  
+  connection.query('SELECT * FROM order_food_info_tb WHERE order_no = ?', [order_no], function(error, result, fields) {
+    if(error) { 
+      throw error;
+    } else {
+      res.send(result);      
+    }
+  });
+})
 
 module.exports = serverAdmin;
