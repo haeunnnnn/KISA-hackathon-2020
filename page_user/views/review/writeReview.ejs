@@ -79,6 +79,7 @@
     });
   });
 
+  // 작성버튼
   $("#writeBtn").click(() => {
     let date = new Date();
     let data = {
@@ -116,6 +117,7 @@
     return year + "-" + (month[1] ? month : "0" + month[0]) + "-" + (date[1] ? date : "0" + date[0]);
   };
 
+  // 쿼리스트링 잘라오기
   function getQueryStringObject() {
         var a = window.location.search.substr(1).split('&');
         if (a == "") return {};

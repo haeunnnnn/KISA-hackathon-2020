@@ -238,9 +238,10 @@ function getOrderCnt(todayDate) {
 // 리뷰 작성
 app.post('/writeReview', function(req, res) {
   const data = req.body;
+  const order_no = data.orderNumber;
   let flag = '';
   const SQL = {
-    order_no: data.orderNumber,
+    order_no: order_no,
     orderer_pn: data.phoneNumber,
     area_nm: data.areaName,
     score: data.rate,
@@ -252,13 +253,52 @@ app.post('/writeReview', function(req, res) {
       flag = 'Fail';
       throw(error);
     } else {
-      flag = 'Success';
+      console.log('insert ok');
+      // 입력 후 주문 테이블 수정
+      connection.query('UPDATE order_info_tb SET review_yn = ? WHERE order_no = ?',['Y', order_no], function(error, results, fields) {
+        if(error) {
+         flag = 'Fail';
+          throw(error);
+        } else {
+          console.log('update ok');
+          flag = 'Success';
+          res.send(flag);
+        }
+      })
     }
-    res.send(flag);
   })
 })
 
-
+// 리뷰 보기
+app.post('/readReview', function(req, res) {
+  const data = req.body;
+  const area_nm = data.area_nm;
+  connection.query(
+    `SELECT '합계' AS order_no
+          , '-' AS orderer_pn
+          , AVG(score) AS score
+          , '-' AS comments
+          , '-' AS write_time
+      FROM review_info_tb
+      WHERE area_nm LIKE ? 
+      GROUP BY area_nm
+      UNION ALL
+      SELECT order_no
+          , orderer_pn
+          , score
+          , comments
+          , write_time
+      FROM review_info_tb
+      WHERE area_nm LIKE ?`
+    , [area_nm, area_nm], function(error, results, fields) {
+    if(error) {
+      throw(error);
+    } else {
+      let result = JSON.stringify(results);
+      res.send(result);
+    }
+  })
+})
 
 
 

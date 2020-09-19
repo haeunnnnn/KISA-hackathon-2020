@@ -126,14 +126,21 @@
       const total_cost = data[i].total_cost;
       const pay_id = data[i].pay_id;
       const cancel_yn = data[i].cancel_yn;
+      const review_yn = data[i].review_yn;
       const serving_yn = data[i].serving_yn;
 
       let order_date = order_no.substr(2, 8);
       var formatted = order_date.slice(0, 4) + "-" + order_date.slice(4, 6) + "-" + order_date.slice(6);
 
       if (serving_yn == "Y") {
-        cancleFlag = "none";
-        reviewFlag = "inline";
+        // 리뷰 작성도 된경우
+        if(review_yn == 'Y') {
+          cancleFlag = "none";  
+          reviewFlag = "none";
+        } else {
+          cancleFlag = "none";
+          reviewFlag = "inline";
+        }
       } else {
         cancleFlag = "inline";
         reviewFlag = "none";
@@ -185,7 +192,7 @@
       "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400"
     );
   }
-  
+
   // 주문취소 프로세스
   function cancelOrder(btn) {
     const order_no = btn.parentNode.childNodes[3].innerHTML;
