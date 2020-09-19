@@ -8,15 +8,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/1853ff613c.js" crossorigin="anonymous"></script>
-<style>
-  .checked {
-    color: tomato;
-  }
-  .unchecked {
-    color: black;
-  }
-</style>
-</head>
+    <style>
+      .checked {
+        color: tomato;
+      }
+      .unchecked {
+        color: black;
+      }
+    </style>
+  </head>
 
   <body>
     <div class="modal-dialog modal-sm">
@@ -36,8 +36,8 @@
               <a href="#"><i class="fas fa-star unchecked" id="five"></i></a>
             </div>
             <div class="form-group">
-              <label for="message-text" class="control-label">내용:</label>
-              <textarea class="form-control" id="message-text" maxlength="100" placeholder="후기를 입력해 주세요""></textarea>
+              <label for="message" class="control-label">내용:</label>
+              <textarea class="form-control" id="message" maxlength="100" placeholder="후기를 입력해 주세요"></textarea>
             </div>
           </form>
         </div>
@@ -57,25 +57,52 @@
     self.close();
   });
 
-  const list = ['one', 'two', 'three', 'four', 'five'];
-  
+  const list = ["one", "two", "three", "four", "five"];
+
   list.forEach((element, index) => {
-    document.getElementById(element).addEventListener('click', () => {
+    document.getElementById(element).addEventListener("click", () => {
       let cls = document.getElementById(element).className;
 
-      if (cls.includes('checked')) {
-        
-        document.getElementById(element).classList.remove('unchecked');
-        document.getElementById(element).classList.add('checked');
+      if (cls.includes("checked")) {
+        document.getElementById(element).classList.remove("unchecked");
+        document.getElementById(element).classList.add("checked");
       } else {
         document.getElementById(element).classList.remove("checked");
         document.getElementById(element).classList.add("unchecked");
       }
-    })
-  })
+    });
+  });
 
   $("#writeBtn").click(() => {
-    self.close();
-    alert("작성되었습니다.");
+    let date = new Date();
+    let data = {
+      phoneNumber: "01012341234", // 하드코딩
+      rate: document.getElementsByClassName("checked").length,
+      message: document.getElementById("message").value,
+      date: date.format(),
+    };
+    console.log(data);
+    if (data.message) {
+      $.ajax({
+        url: "writeReview",
+        type: "POST",
+        data,
+        success: function (data) {
+          console.log(data);
+          alert("작성되었습니다.");
+          self.close();
+        },
+      });
+    } else {
+      alert("내용을 입력하세요.");
+    }
   });
+
+  // 데이트 포맷 변환 YYYY-MM-DD
+  Date.prototype.format = function () {
+    let year = this.getFullYear().toString();
+    let month = (this.getMonth() + 1).toString();
+    let date = this.getDate().toString();
+    return year + "-" + (month[1] ? month : "0" + month[0]) + "-" + (date[1] ? date : "0" + date[0]);
+  };
 </script>
