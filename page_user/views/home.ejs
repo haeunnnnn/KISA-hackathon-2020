@@ -21,11 +21,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/home"><i class="fas fa-utensils" style="color:#ffff; font-size:25px"></i></a>
+                <a class="navbar-brand" href="/home"><i class="fas fa-home" style="color:#ffff; font-size:25px"></i></a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/home"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="/orderlist"><i class="fas fa-list-ul"></i> OrderList</a></li>
+                    <li><a href="/arealist"><i class="fas fa-list-ul"></i> AreaList</a></li>
                 </ul>
             </div>
         </div>
@@ -282,7 +284,14 @@
 
         for (i in results) {
             var restArea_roadName = results[i].road_nm;
-            var new_roadName = restArea_roadName.substring(0, restArea_roadName.length - 1);
+            var idx = restArea_roadName.indexOf("선");
+            var new_roadName;
+            if(idx != -1){
+                new_roadName = restArea_roadName.substring(0, restArea_roadName.length - 1);
+            }
+            else{
+                new_roadName = restArea_roadName;
+            }
             if (new_roadName == rName) {
                 var distance = {
                     lat: results[i].latitude,
