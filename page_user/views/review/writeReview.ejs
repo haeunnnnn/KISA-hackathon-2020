@@ -8,7 +8,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/1853ff613c.js" crossorigin="anonymous"></script>
-
+<style>
+  .checked {
+    color: tomato;
+  }
+  .unchecked {
+    color: black;
+  }
+</style>
 </head>
 
   <body>
@@ -22,11 +29,11 @@
           <form method="POST">
             <div class="form-group">
               <label for="rating" class="control-label">별점:</label>
-              <a href="#"><i class="fas fa-star" style="color: tomato;"></i></a>
-              <a href="#"><i class="fas fa-star" ></i></a>
-              <a href="#"><i class="fas fa-star" ></i></a>
-              <a href="#"><i class="fas fa-star" ></i></a>
-              <a href="#"><i class="fas fa-star" ></i></a>
+              <a href="#"><i class="fas fa-star checked" id="one"></i></a>
+              <a href="#"><i class="fas fa-star unchecked" id="two"></i></a>
+              <a href="#"><i class="fas fa-star unchecked" id="three"></i></a>
+              <a href="#"><i class="fas fa-star unchecked" id="four"></i></a>
+              <a href="#"><i class="fas fa-star unchecked" id="five"></i></a>
             </div>
             <div class="form-group">
               <label for="message-text" class="control-label">내용:</label>

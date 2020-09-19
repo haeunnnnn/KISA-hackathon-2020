@@ -88,7 +88,7 @@
   $("#btnMenu").click(function () {
     window.location.href = "/menulist?area_nm=" + areaName;
   });
-  
+
   // qs로 보내준 데이터를(? 이후 데이터) key : value 방식으로 자바스크립트obj 로 풀어주는 함수
   function getQueryStringObject() {
     var a = window.location.search.substr(1).split("&");
@@ -130,7 +130,7 @@
     const thead = `<thead>
                 <tr>
                     <th colspan="3">
-                        <h4>${results["area_nm"]} 휴게소
+                        <h4>${results["area_nm"]} 휴게소<br>
                             <small>${results["road_nm"]}고속도로 제${results["road_no"]}호선<small>
                         </h4>
                     </th>
@@ -196,7 +196,7 @@
       score_img += `<i class="fas fa-star" style="color: Tomato;"></i>`;
     }
     if (f != 0.0) {
-      score_img += `<i class="fas fa-star-half" style="color: Tomato;""></i>`;
+      score_img += `<i class="fas fa-star-half" style="color: Tomato;"></i>`;
     }
     score_img += `</td>`;
     return score_img;
