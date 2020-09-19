@@ -175,13 +175,6 @@
     };
     // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
     var map = new naver.maps.Map(mapContainer, mapOption);
-    // var marker = new naver.maps.Marker({
-    //   map: map,
-    //   position: new naver.maps.LatLng(results["latitude"], results["longitude"]),
-    //   //title: areaInfo.name,
-    //   //clickable : true
-    // });
-    // marker.setMap(map);
   }
 
   function drawStar() {
@@ -196,7 +189,7 @@
       score_img += `<i class="fas fa-star" style="color: Tomato;"></i>`;
     }
     if (f != 0.0) {
-      score_img += `<i class="fas fa-star-half" style="color: Tomato;"></i>`;
+      score_img += `<i class="fas fa-star-half-alt" style="color: Tomato;"></i>`;
     }
     score_img += `</td>`;
     return score_img;
