@@ -83,10 +83,11 @@
 
 <script>
   const ajax = $.ajax;
+  
   // 핸드폰번호 입력후 검색 버튼 클릭시 이벤트
   $("#btnSearch").click(function () {
-    const phoneNum = document.getElementById("phoneNum").value;
     const gigan = $("#gigan option:selected").val();
+    const phoneNum = document.getElementById("phoneNum").value;
 
     try {
       if (phoneNum.length < 11 || phoneNum.length > 11) {
@@ -172,14 +173,19 @@
       "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400"
     );
   }
+  
+  // 리뷰작성 버튼
   function writeReview(btn) {
     const order_no = btn.parentNode.childNodes[3].innerHTML;
+    const area_nm = btn.parentNode.childNodes[1].innerHTML;
+    const phone_no = document.getElementById("phoneNum").value;
     window.open(
-      `./writeReview?order_no=${order_no}`,
+      `./writeReview?order_no=${order_no}&phone_no=${phone_no}&area_nm=${area_nm}`,
       "open",
       "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400"
     );
   }
+  
   // 주문취소 프로세스
   function cancelOrder(btn) {
     const order_no = btn.parentNode.childNodes[3].innerHTML;

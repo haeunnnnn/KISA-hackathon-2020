@@ -235,36 +235,31 @@ function getOrderCnt(todayDate) {
   });
 }
 
-
-// admin 에서 휴게소이름에 따라 주문리스트 보여주기
-app.post("/adminRequestOrderList", function(req, res) {
-  let area_nm = (req.body.area_nm == '전체' ? '%' : req.body.area_nm);
-  console.log(area_nm);
-  connection.query('SELECT * FROM order_info_tb WHERE area_nm LIKE ? ORDER BY 1 DESC', [area_nm], function(error, result, fields) {
+// 리뷰 작성
+app.post('/writeReview', function(req, res) {
+  const data = req.body;
+  let flag = '';
+  const SQL = {
+    order_no: data.orderNumber,
+    orderer_pn: data.phoneNumber,
+    area_nm: data.areaName,
+    score: data.rate,
+    comments: data.message,
+    write_time: data.date,
+  }
+  connection.query('INSERT INTO review_info_tb SET ?', SQL, function(error, results, fields) {
     if(error) {
-      throw error;
+      flag = 'Fail';
+      throw(error);
     } else {
-      console.log(result);
-      res.send(JSON.stringify(result));
+      flag = 'Success';
     }
+    res.send(flag);
   })
 })
 
-// admin 에서 휴게소이름에 따라 주문리스트 보여주기
-app.post("/adminUpdateOrderInfo", function(req, res) {
-  const orderNo = req.body.order_no;
 
-  console.log(orderNo);
 
-  // 수정
-  connection.query('UPDATE order_info_tb SET serving_yn = ? WHERE order_no = ?', ['Y', orderNo], function(error, result, fields) {
-    if(error) {
-      throw error;
-    } else {
-      console.log(result);
-    }
-  })
-})
 
 
 // 클라이언트에서 결제 요청

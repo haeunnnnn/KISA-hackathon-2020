@@ -41,13 +41,14 @@ function createOrderInfo (connection) {
     return new Promise( (resolve, reject) => {
     connection.query(
         `CREATE TABLE order_info_tb (
-            order_no varchar(15) primary key,
             orderer_pn varchar(13) not null,
+            order_no varchar(15) primary key,
             order_time datetime default now(),
             pay_id varchar(40) not null,
             area_nm varchar(30) character set utf8 not null,
             total_cost int not null,
             takeout_yn varchar(1) not null default 'N',
+            review_yn varchar(1) not null default 'N',
             serving_yn varchar(1) not null default 'N',
             cancel_yn varchar(1) not null default 'N'
         )`,
@@ -112,9 +113,9 @@ function createReviewInfo (connection) {
     return new Promise( (resolve, reject) => {
         connection.query(
         `CREATE TABLE review_info_tb (
-            order_no varchar(15) not null,
-            orderer_pn varchar(13) not null,
             area_nm varchar(30) character set utf8 not null,
+            order_no varchar(15) primary key,
+            orderer_pn varchar(13) not null,
             score decimal(2,1) not null,
             comments varchar(200) character set utf8,             
             write_time datetime default now()
