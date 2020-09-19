@@ -3,13 +3,6 @@
 
 <head>
     <title>휴게소 관리자 페이지</title>
-    <!-- <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Product Admin - Dashboard HTML Template</title>
-    <link rel="stylesheet" href="css/fontawesome.min.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/templatemo-style.css"> -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -73,13 +66,12 @@
         </div>
     </div>
 </body>
-
 </html>
 
-<!-- [운영자] - 휴게소 종류 셀렉트박스 값 -->
 <script>
+    // 휴게소 목록 셀렉트 박스
     $.ajax({
-        url: 'adminShowAreaList',
+        url: 'showAreaList',
         type: 'POST',
         success: function (data) {
             const result = JSON.parse(data);
@@ -100,13 +92,12 @@
     }
 </script>
 
-<!-- [운영자] - 휴게소에 들어온 주문내역 DB에 접근해서 Table 형태로 그리기 -->
 <script>
-
+    // 휴게소에 들어온 주문내역 DB에 접근해서 Table 형태로 그리기
     const ajax = $.ajax;
     window.onload = ajaxFunc('전체');
-    // 주문 완료시 소켓에 데이터 받기
 
+    // 셀렉트 박스 변경 시 자동 검색
     $('#areaList').change(function () {
         var area_nm = $('#areaList option:selected').val();
         console.log('selected:', area_nm);
@@ -118,7 +109,7 @@
     // ajax 통신 부분
     function ajaxFunc(area_nm) {
         ajax({
-            url: 'adminShowOrderList',
+            url: 'showOrderList',
             type: 'POST',
             data: {
                 area_nm: area_nm
@@ -133,7 +124,7 @@
         })
     }
 
-    // 이부분은 나중에 주문내역 보이도록 현재는 휴게소 정보로 나오도록 일단 해둠 (수정할 것)
+    // 셀렉트 박스에서 선택한 휴게소에 있는 주문 목록을 읽어와서 출력
     function drawTable(data) {
         const oldChild = document.querySelector('tbody');
         console.log(oldChild);
@@ -162,7 +153,7 @@
                 text = '확인';
                 color = 'primary';
             }
- //           td3.innerHTML = `<button class="btn btn-danger btn-xs" style="height:auto; width:auto; float:right;" onclick="deleteMenu(this)">삭제</button>`;    // 눌르면 주문 상세내용 나옴
+
             var takeout = '';
             if(data[i].takeout_yn === 'Y') {
                 takeout = '포장';
@@ -208,7 +199,7 @@
         const orderNo = btn.parentNode.parentNode.childNodes[2].innerHTML;
 
         ajax({
-            url: 'adminUpdateOrderInfo',
+            url: 'updateOrderInfo',
             type: 'POST',
             data: {
                 order_no: orderNo,

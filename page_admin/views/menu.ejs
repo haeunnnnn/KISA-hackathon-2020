@@ -76,15 +76,13 @@
 <!-- [운영자] - 휴게소 종류 셀렉트박스 값 -->
 <script>
     $.ajax({
-        url: 'adminShowAreaList',
+        url: 'showAreaList',
         type: 'POST',
         success: function (data) {
             const result = JSON.parse(data);
             addSelectOption(result);
         }
     })
-
-
 
     // 셀렉트박스 리스트 아이템 붙이기
     function addSelectOption(data) {
@@ -99,11 +97,12 @@
     }
 </script>
 
-<!-- [운영자] - 휴게소에 들어온 주문내역 DB에 접근해서 Table 형태로 그리기 -->
 <script>
+    // 셀렉트 박스 변경 시 자동 검색
     const ajax = $.ajax;
     var area_nm = '';
     var food_code = '';
+
     $('#areaList').change(function () {
         area_nm = $('#areaList option:selected').val();
         console.log('selected:', area_nm);
@@ -115,7 +114,7 @@
     // ajax 통신 부분
     function ajaxFunc(area_nm) {
         ajax({
-            url: 'adminShowMenuList',
+            url: 'showMenuList',
             type: 'POST',
             data: {
                 area_nm: area_nm
@@ -130,7 +129,7 @@
         })
     }
 
-    // 이부분은 나중에 주문내역 보이도록 현재는 휴게소 정보로 나오도록 일단 해둠 (수정할 것)
+    // 휴게소에 등록된 메뉴 출력
     function drawTable(data) {
         const oldChild = document.querySelector('tbody');
         console.log(oldChild);
@@ -177,7 +176,7 @@
     function deleteMenu(btn) {
         const food_name = btn.parentNode.parentElement.children[1].innerText;
         ajax({
-            url: 'adminDeleteMenuInfo',
+            url: 'deleteMenu',
             type: 'POST',
             data: {
                 area_name: area_nm,
@@ -194,5 +193,4 @@
             }
         });
     }
-
 </script>
