@@ -312,6 +312,17 @@ app.post('/readReview', function(req, res) {
   })
 })
 
+// 리뷰보기 화면에서 주문번호 마다 먹은 음식 가져오기
+app.post('/readReviewFood', function(req, res) {
+  const order_no = req.body.order_no;
+  connection.query('SELECT food_nm FROM order_food_info_tb WHERE order_no = ?', [order_no], function(error, results, fields) {
+    if(error) {
+      throw(error);
+    } else {
+      res.send(JSON.stringify(results));
+    }
+  })
+})
 
 
 // 클라이언트에서 결제 요청
