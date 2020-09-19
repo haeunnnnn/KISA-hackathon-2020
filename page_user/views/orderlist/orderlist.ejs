@@ -15,22 +15,28 @@
   <body>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
-          <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="/home"><i class="fas fa-home" style="color:#ffff; font-size:25px"></i></a>
-          </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-              <ul class="nav navbar-nav navbar-right">
-                  <li><a href="/home"><i class="fas fa-home"></i> Home</a></li>
-                  <li><a href="/orderlist"><i class="fas fa-list-ul"></i> OrderList</a></li>
-                  <li><a href="/arealist"><i class="fas fa-list-ul"></i> AreaList</a></li>
-              </ul>
-          </div>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/home"><i class="fas fa-home" style="color: #ffff; font-size: 25px"></i></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="/home"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li>
+              <a href="/orderlist"><i class="fas fa-list-ul"></i> OrderList</a>
+            </li>
+            <li>
+              <a href="/arealist"><i class="fas fa-list-ul"></i> AreaList</a>
+            </li>
+          </ul>
+        </div>
       </div>
-  </nav>
+    </nav>
 
     <!-- 주문 내역 -->
     <div class="tab-pane" id="orderHistory">
@@ -58,9 +64,7 @@
 
         <div class="well">
           <div class="container">
-            <div id="orderList" class="row">
-              <div class="col-sm-1"></div>
-
+            <div id="orderList" class="row" style="margin-right: 10%">
               <!-- <div class="col-sm-2"></div> -->
             </div>
           </div>
@@ -72,11 +76,11 @@
 
 <script>
   const ajax = $.ajax;
-  const phoneNum = localStorage.getItem('userPhoneNum');
+  const phoneNum = localStorage.getItem("userPhoneNum");
   // 핸드폰번호 입력후 검색 버튼 클릭시 이벤트
-  ajaxFunc('오늘');
+  ajaxFunc("오늘");
 
-  $('#gigan').change(function() {
+  $("#gigan").change(function () {
     const gigan = $("#gigan option:selected").val();
     console.log(gigan);
 
@@ -116,8 +120,8 @@
 
       if (serving_yn == "Y") {
         // 리뷰 작성도 된경우
-        if(review_yn == 'Y') {
-          cancleFlag = "none";  
+        if (review_yn == "Y") {
+          cancleFlag = "none";
           reviewFlag = "none";
         } else {
           cancleFlag = "none";
@@ -135,7 +139,7 @@
                         <div class="panel-heading">${formatted}</div>
                             <div class="panel-body">
                                 <h4>${area_nm}</h4>
-                                <h4>${order_no}</h4>
+                                <h4 style="font-size: 1.3rem;">${order_no}</h4>
                                 <h4><small><span>총 결제 금액 : </span><span>${total_cost}</span>원</small></h4>
                                 <br>
                                 <button onClick='openWin(this)' class="btn btn-info">주문상세</button>
@@ -162,7 +166,7 @@
       "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400"
     );
   }
-  
+
   // 리뷰작성 버튼
   function writeReview(btn) {
     const order_no = btn.parentNode.childNodes[3].innerHTML;
