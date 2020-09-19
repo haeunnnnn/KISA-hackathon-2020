@@ -10,7 +10,6 @@
     <script src="https://kit.fontawesome.com/1853ff613c.js" crossorigin="anonymous"></script>
   </head>
   <script src="https://cdn.bootpay.co.kr/js/bootpay-3.2.6.min.js" type="application/javascript"></script>
-
   <body>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
@@ -34,6 +33,7 @@
       </div>
     </nav>
 
+  </div>
     <!-- 장바구니 -->
     <div class="tab-pane" id="cart">
       <div class="container">
@@ -64,6 +64,29 @@
   </body>
 </html>
 
+<script>
+     $(document).ready(function () {
+     $('.modal').modal('show');
+      });
+    </script>
+<div id="myModal" class="modal fade" role="dialog">
+
+  <!-- 위치 수정해야함. .. -->
+  <div class="modal-dialog modal-sm">
+    <!-- Modal -->
+    <div class="modal-content">
+      <div class="modal-header" >
+        <button type=" button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"> 경고 <i class="fas fa-exclamation fa-lg" style="color:red"></i></h4>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <p>도착 <strong>15분</strong>전에 주문 바랍니다.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
 <script>
   // 메뉴 안고르고 카트로 올 경우 예외처리
   // for(var i=0; i<localStorage.length; i++) {
@@ -109,9 +132,7 @@
                                         <span id="${item.unique}price">${item.price}원</span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-default btn-xs" id="${
-                                          item.unique
-                                        }minusBtn">
+                                        <button type="button" class="btn btn-default btn-xs" id="${item.unique}minusBtn">
                                         <span class="glyphicon glyphicon-minus"></span>
                                         </button>
                                         &nbsp;
