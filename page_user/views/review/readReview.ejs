@@ -12,6 +12,7 @@
 </head>
 
 <body>
+<div class="container"></div>
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -36,13 +37,13 @@
     <div class="totalReview" id="totalReviewData" style="text-align:center; top:50%; left:50%"></div>
 </div>
 <div class="reviews" id="reviewData"></div>
-
 <script>
     showTotalScore();
     showReview();
 
     function showTotalScore(){
         // 전체 평균평점하고 style하고 크기 조정해주어야함.
+        var score = "3.0";
         var tatalScore = drawStar(score, "3x");
         const div1 = document.getElementById("totalReviewData");
         div1.innerHTML += `<h3>평점</h3>`
@@ -66,9 +67,9 @@
                     <small>by Joe</a></small>
                 </div>
             <div class="col-md-9">
-                <h4>My awesome review<br> ${starImage} </h4>
+                <h4>리뷰 내용<br> ${starImage} </h4>
                 <div class="ratebox text-center" data-id="0" data-rating="5"></div>
-                <p class="review-text">My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. </p>
+                <p class="review-text">먹은음식 먹은음식 먹은음식</p>
         
                 <small class="review-date">March 26, 2017</small>
             </div>                          
