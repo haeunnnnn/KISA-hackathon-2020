@@ -12,6 +12,7 @@
 </head>
 
 <body>
+<div class="container"></div>
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -29,21 +30,25 @@
         </div>
     </div>
 </nav>
-<div class="totalReview" id="totalReviewData" style="text-align:center; top:50%; left:50%"></div>
+<div class="page-header" style="text-align: center;">
+    <h3>휴게소 이름 넣어야함</h3>
+</div>
+<div class="well">
+    <div class="totalReview" id="totalReviewData" style="text-align:center; top:50%; left:50%"></div>
+</div>
 <div class="reviews" id="reviewData"></div>
-
 <script>
     showTotalScore();
     showReview();
 
     function showTotalScore(){
         // 전체 평균평점하고 style하고 크기 조정해주어야함.
-        var score = drawStar("3.0");
-        var tatalScore = drawStar(score);
+        var score = "3.0";
+        var tatalScore = drawStar(score, "3x");
         const div1 = document.getElementById("totalReviewData");
-        div1.innerHTML += `<br><h3>평점</h3>`
+        div1.innerHTML += `<h3>평점</h3>`
         div1.innerHTML += tatalScore;
-        div1.innerHTML += ` (${score} / 5.0)`;
+        div1.innerHTML += `<br><h3>(${score} / 5.0)</h3>`;
         div1.innerHTML += `<br><br><br>`
 
     }
@@ -53,18 +58,18 @@
         const div2 = document.getElementById("reviewData");
         //임의로 5개 원래는 리뷰 개수와 내용대로 출력
         for(var i=0; i<5; i++){
-            var starImage = drawStar("4.5");
+            var starImage = drawStar("4.5", "1x");
             div2.innerHTML +=`<div style="border-top:1px solid black;"><br>`;
             div2.innerHTML +=
             `
-            <div class="row blockquote review-item" style="margin-left:30px">
+            <div class="row blockquote review-item" style="margin-left:40px; margin-right:40px">
                 <div class="caption">
                     <small>by Joe</a></small>
                 </div>
             <div class="col-md-9">
-                <h4>My awesome review ${starImage} </h4>
+                <h4>리뷰 내용<br> ${starImage} </h4>
                 <div class="ratebox text-center" data-id="0" data-rating="5"></div>
-                <p class="review-text">My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. My awesome review. </p>
+                <p class="review-text">먹은음식 먹은음식 먹은음식</p>
         
                 <small class="review-date">March 26, 2017</small>
             </div>                          
@@ -74,16 +79,17 @@
         }
     }
     
-    function drawStar(avg_score) {
+    function drawStar(avg_score, fontSize) {
         //var avg_score = "3.2"; // DB에서 평점 받아와야함
         var n;
         var f;
+        fontSize = "-"+fontSize;
         avg_score = avg_score.split("."); // [ 3, 5]
         n = parseInt(avg_score[0]); // 3
         f = parseFloat("0." + avg_score[1]); // 0.5
         var score_img = `<td>`;
         for (var i = 0; i < n; i++) {
-            score_img += `<i class="fas fa-star" style="color: orange;"></i>`;
+            score_img += `<i class="fas fa-star fa${fontSize}" style="color: orange;"></i>`;
         }
         if (f != 0.0) {
             score_img += `<i class="fas fa-star-half" style="color: orange;""></i>`;
