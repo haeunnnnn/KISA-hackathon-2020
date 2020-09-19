@@ -1,138 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+  <head>
     <title>휴게소 바로 주문</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/1853ff613c.js" crossorigin="anonymous"></script>
-    </head>
+  </head>
 
-    <body>
+  <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/home"><i class="fas fa-home" style="color:#ffff; font-size:25px"></i></a>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/home"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="/orderlist"><i class="fas fa-list-ul"></i> OrderList</a></li>
-                    <li><a href="/arealist"><i class="fas fa-list-ul"></i> AreaList</a></li>
-                </ul>
-            </div>
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/home"><i class="fas fa-home" style="color: #ffff; font-size: 25px"></i></a>
         </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="/home"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li>
+              <a href="/orderlist"><i class="fas fa-list-ul"></i> OrderList</a>
+            </li>
+            <li>
+              <a href="/arealist"><i class="fas fa-list-ul"></i> AreaList</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
-
-    <div class="container-fluid">
-        <div class="row">
-        <div class="col-9 col-sm-10">
-            <div style='text-align: center'>
-                <select id='roadList'>
-                    <option value='all' selected='selected'>전체</option>
-                </select>
-                <h4>고속도로 목록</h4>
-            </div>
-            <br>
-
-            <div id="display" class="container-fluid" style="overflow-y: scroll; overflow-x:hidden; height: 740px;">
-            <!--메뉴리스트 출력-->
-            </div>
-        </div>
-        </div>
+    <div class="container">
+      <div class="page-header">
+        <h3>고속도로 목록</h3>
+      </div>
+      <div class="form-group">
+        <select class="form-control" id="roadList" style="width: 30%">
+          <option value="all" selected="selected">전체</option>
+        </select>
+      </div>
+      <br />
+      <div class="list-group" id="display" style="overflow-y: scroll; overflow-x: hidden; height: 740px"></div>
     </div>
-    </body>
+  </body>
 </html>
 
 <script>
-    $.ajax({
-        url: 'showRoadList',
-        type: 'POST',
-        success: function (data) {
-            const result = JSON.parse(data);
-            addSelectOption(result);
-        }
-    })
+  $.ajax({
+    url: "showRoadList",
+    type: "POST",
+    success: function (data) {
+      const result = JSON.parse(data);
+      addSelectOption(result);
+    },
+  });
 
-    // 셀렉트박스 리스트 아이템 붙이기
-    function addSelectOption(data) {
-        const selectItem = document.getElementById('roadList');
-        for(var i=0; i < data.length; i++) {
-            console.log(data[i]);
-            var optionItem = document.createElement('option');
-            optionItem.innerHTML = data[i].road_nm;
-            optionItem.value = data[i].road_nm;
-            selectItem.appendChild(optionItem);
-        }
+  // 셀렉트박스 리스트 아이템 붙이기
+  function addSelectOption(data) {
+    const selectItem = document.getElementById("roadList");
+    for (var i = 0; i < data.length; i++) {
+      console.log(data[i]);
+      var optionItem = document.createElement("option");
+      optionItem.innerHTML = data[i].road_nm;
+      optionItem.value = data[i].road_nm;
+      selectItem.appendChild(optionItem);
     }
+  }
 </script>
 
 <script>
-    var road_nm = $('#roadList option:selected').val();
-    window.onload = ajaxFunc('전체');
+  var road_nm = $("#roadList option:selected").val();
+  window.onload = ajaxFunc("전체");
 
-    // 서버에서 메뉴 정보 가져오기
-    $('#roadList').change(function() {
-        var road_nm = $('#roadList option:selected').val();
-        console.log('selected:',road_nm);
-        clearTable();
-        ajaxFunc(road_nm);
-    })
+  // 서버에서 메뉴 정보 가져오기
+  $("#roadList").change(function () {
+    var road_nm = $("#roadList option:selected").val();
+    console.log("selected:", road_nm);
+    clearTable();
+    ajaxFunc(road_nm);
+  });
 
-    // ajax 통신 부분
-    function ajaxFunc(road_nm) {
-        $.ajax({
-            url: '/showAllRestareaList',
-            type: 'POST',
-            data: {
-                road_nm: road_nm
-            },
-            success: function (data) {
-                // console.log(data);
-                var result = JSON.parse(data);
-                // console.log(result);
-                drawAreaList(result);
-            }   
-        });
-    }
+  // ajax 통신 부분
+  function ajaxFunc(road_nm) {
+    $.ajax({
+      url: "/showAllRestareaList",
+      type: "POST",
+      data: {
+        road_nm: road_nm,
+      },
+      success: function (data) {
+        // console.log(data);
+        var result = JSON.parse(data);
+        // console.log(result);
+        drawAreaList(result);
+      },
+    });
+  }
 
-    //API 가져와서 카드에 메뉴넣는 함수
-    function drawAreaList(data) {
-      var html = '';
-      $.each(data, function (key, value) {
-        html += `
-            <div class='panel panel-default'>
-                <div class='panel-body'>
-                    <div style='padding-left:20px;'><h4>${value.area_nm}</h4>
-                        <p class='card-text' id=cost>${value.road_nm}</p>
-                    </div><br>
-                <div class='container'>
-                    <div class='row'>
-                      <button id='btnDetail' onClick="location.href='/restAreaInfo?area_code=${value.area_code}'" class='btn btn-primary'>상세정보</button>
-                    </div>
-                </div>
+  //API 가져와서 카드에 메뉴넣는 함수
+  function drawAreaList(data) {
+    var html = "";
+    $.each(data, function (key, value) {
+      html += `
+      <a href="#" class="list-group-item">
+          <div class="row">
+            <div class="col-xs-9">
+              <h4 class="list-group-item-heading">${value.area_nm}</h4>
+              <p class="list-group-item-text">${value.road_nm}</p>
             </div>
-            <br>
+            <div class="col-xs-3">
+              <button
+                id="btnDetail"
+                onClick="location.href='/restAreaInfo?area_code=${value.area_code}'"
+                class="btn btn-primary"
+              >
+                상세정보
+              </button>
+            </div>
+          </div>
+        </a>
         `;
-      });
-      $("#display").empty();
-      $("#display").append(html);
+    });
+    $("#display").empty();
+    $("#display").append(html);
+  }
+
+  // 조회조건이 변경되면 테이블 밀어야함
+  function clearTable() {
+    const oldChild = document.getElementById("display");
+    // 기존 테이블 내용 삭제
+    while (oldChild.hasChildNodes()) {
+      oldChild.removeChild(oldChild.firstChild);
     }
-
-    // 조회조건이 변경되면 테이블 밀어야함
-    function clearTable() {
-        const oldChild = document.getElementById('display');
-        // 기존 테이블 내용 삭제
-        while ( oldChild.hasChildNodes() ) { 
-            oldChild.removeChild( oldChild.firstChild );
-        }
-    }
-
-
+  }
 </script>
