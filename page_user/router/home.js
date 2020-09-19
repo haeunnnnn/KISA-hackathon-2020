@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
 
 // 홈 화면
 router.get("/home", function (req, res) {
-    res.render("./home/home");
+    res.render("./home/home-1");
 });
   
 // 각 휴게소 정보 화면

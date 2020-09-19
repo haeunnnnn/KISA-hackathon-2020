@@ -103,7 +103,7 @@
     totalPrice = totalPrice + item.qty * item.price;
   }
   $(() => {
-    $("#totalPrice").text(totalPrice);
+    $("#totalPrice").text(numberWithCommas(totalPrice));
     // 메뉴 개수에 따른 장바구니 목록 출력
     for (item of cartItems) {
       $(".well").prepend(
@@ -125,7 +125,7 @@
                                 </thead>
                                 <tbody>
                                     <td>
-                                        <span id="${item.unique}price">${item.price}원</span>
+                                        <span id="${item.unique}price">${numberWithCommas(item.price)}원</span>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-default btn-xs" id="${item.unique}minusBtn">
@@ -139,7 +139,7 @@
                                         </button>
                                     </td>
                                     <td>
-                                        <span class="price" id="${item.unique}total">${item.price * item.qty}</span>원
+                                        <span class="price" id="${item.unique}total">${numberWithCommas(item.price * item.qty)}</span>원
                                     </td>
                                 </tbody>
                             </table>
@@ -151,6 +151,7 @@
     }
     // 메뉴마다 + - 버튼 기능 추가하기
     for (let i = 0; i < cartItems.length; i++) {
+
       //수량 + 버튼
       $(`#${cartItems[i].unique}plusBtn`).click(() => {
         let count = $(`#${cartItems[i].unique}count`).text(); // 수량
@@ -162,9 +163,10 @@
 
         cartItems[i].qty = count;
         $(`#${cartItems[i].unique}count`).text(count); // 삽입
-        $(`#${cartItems[i].unique}total`).text(price); // 삽입
-        $(`#totalPrice`).text(totalPrice); // 삽입
+        $(`#${cartItems[i].unique}total`).text(numberWithCommas(price)); // 삽입
+        $(`#totalPrice`).text(numberWithCommas(totalPrice)); // 삽입
       });
+
       // 수량 - 버튼
       $(`#${cartItems[i].unique}minusBtn`).click(() => {
         let count = $(`#${cartItems[i].unique}count`).text(); // 수량
@@ -181,8 +183,8 @@
 
         cartItems[i].qty = count;
         $(`#${cartItems[i].unique}count`).text(count); // 삽입
-        $(`#${cartItems[i].unique}total`).text(price); // 삽입
-        $(`#totalPrice`).text(totalPrice); // 삽입
+        $(`#${cartItems[i].unique}total`).text(numberWithCommas(price)); // 삽입
+        $(`#totalPrice`).text(numberWithCommas(totalPrice)); // 삽입
       });
     }
 
@@ -191,7 +193,6 @@
       // 전화번호 입력시 숫자만 & 11자리 입력 예외처리
       var phone_no = localStorage.getItem('userPhoneNum');
       var formatted_phone_no;
-      debugger;
       formatted_phone_no = phone_no.slice(0, 3) + "-" + phone_no.slice(3, 7) + "-" + phone_no.slice(7);
 
       let order_no;
@@ -205,8 +206,8 @@
         let orderItem = {};
         orderItem.unique = document.getElementsByName("menuCheckBox")[i].value;
         orderItem.qty = document.getElementById(orderItem.unique + "count").innerText;
-        orderItem.price = parseInt(document.getElementById(orderItem.unique + "price").innerText);
-        orderItem.total = parseInt(document.getElementById(orderItem.unique + "total").innerText);
+        orderItem.price = parseInt(numberWithoutCommas(document.getElementById(orderItem.unique + "price").innerText));
+        orderItem.total = parseInt(numberWithoutCommas(document.getElementById(orderItem.unique + "total").innerText));
         orderItem.item_name = document.getElementById(orderItem.unique + "name").innerText;
         if (orderItem.qty != 0) {
           orderList.push(orderItem);
@@ -330,5 +331,15 @@
       }
     }
     return b;
+  }
+
+  // 숫자 to 금액
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  // 금액 to 숫자
+  function numberWithoutCommas(x) {
+    return x.toString().replace(",", '');
   }
 </script>

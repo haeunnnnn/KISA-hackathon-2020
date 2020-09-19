@@ -98,7 +98,7 @@
         document.getElementById('orderDate').innerHTML = orderDate;
         document.getElementById('orderArea').innerHTML = orderArea;
         document.getElementById('orderNumber').innerHTML = orderNumber;
-        document.getElementById('totalPrice').innerHTML = totalPrice;
+        document.getElementById('totalPrice').innerHTML = numberWithCommas(totalPrice);
     } else {
         $('#orderCard *').remove();
     }
@@ -152,5 +152,15 @@
         } else {
             return false;
         }
+    }
+
+    // 숫자 to 금액
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // 금액 to 숫자
+    function numberWithoutCommas(x) {
+        return x.toString().replace(",", '');
     }
 </script>
