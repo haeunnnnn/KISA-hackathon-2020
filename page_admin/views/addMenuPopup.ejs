@@ -162,7 +162,7 @@
       var foodCode = food_code.substr(0, 7) + formatNum(parseInt(food_code.substr(7, 3)) + 1);
 
       $.ajax({
-        url: "adminAddMenu",
+        url: "addMenu",
         type: "POST",
         data: {
           food_code: foodCode,

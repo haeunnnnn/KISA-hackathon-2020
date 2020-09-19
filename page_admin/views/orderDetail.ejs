@@ -14,22 +14,6 @@
   </head>
 
   <body>
-    <!-- Modal -->
-    <!-- <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header"" >
-                    <button type=" button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">주문번호</h4>
-            </div>
-            <div class="modal-body">
-                <p>고객님의 주문번호는 <strong>000061</strong>입니다.</p>
-                <p>예상 조리완성 시간은<strong>오후 06:00</strong>입니다.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div> -->
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
@@ -73,11 +57,10 @@
 <script>
   const qs = getQueryStringObject();
   let order_no = qs.order_no;
-  
-  console.log(qs.order_no);
 
+  // 서버 통신
   $.ajax({
-        url: '/requestOrderInfo',
+        url: '/orderDetailInfo',
         type: 'POST',
         data: {
             order_no: order_no, 
@@ -87,6 +70,7 @@
         }
     });
 
+    // 주문 상세 내용 출력
     function drawOrderInfo(data) {
         const table = document.getElementById('orderList');
         const div = document.getElementById('info');
@@ -141,6 +125,7 @@
         div.innerHTML = html2;
     }
 
+    // 쿼리스트링 잘라오기
     function getQueryStringObject() {
         var a = window.location.search.substr(1).split('&');
         if (a == "") return {};
@@ -155,10 +140,7 @@
         }
         return b;
     }
-
 </script>
-
-
 
 <script>
   $('.close').click(() => {

@@ -21,14 +21,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/home"><i class="fas fa-utensils"
-                        style="color:#ffff; font-size:25px"></i></a>
+                <a class="navbar-brand" href="/admin"><i class="fas fa-home" style="color:#ffff; font-size:25px"></i></a>
             </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
+            <!-- <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/admin"><i class="fas fa-home"></i> Home</a></li>
                 </ul>
-            </div>
+            </div> -->
         </div>
     </nav>
 
@@ -74,29 +73,16 @@
 
 </html>
 
-<script src="js/jquery-3.3.1.min.js"></script>
-<!-- https://jquery.com/download/ -->
-<script src="js/moment.min.js"></script>
-<!-- https://momentjs.com/ -->
-<script src="js/Chart.min.js"></script>
-<!-- http://www.chartjs.org/docs/latest/ -->
-<script src="js/bootstrap.min.js"></script>
-<!-- https://getbootstrap.com/ -->
-<script src="js/tooplate-scripts.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <!-- [운영자] - 휴게소 종류 셀렉트박스 값 -->
 <script>
     $.ajax({
-        url: 'adminShowAreaList',
+        url: 'showAreaList',
         type: 'POST',
         success: function (data) {
             const result = JSON.parse(data);
             addSelectOption(result);
         }
     })
-
-
 
     // 셀렉트박스 리스트 아이템 붙이기
     function addSelectOption(data) {
@@ -111,11 +97,12 @@
     }
 </script>
 
-<!-- [운영자] - 휴게소에 들어온 주문내역 DB에 접근해서 Table 형태로 그리기 -->
 <script>
+    // 셀렉트 박스 변경 시 자동 검색
     const ajax = $.ajax;
     var area_nm = '';
     var food_code = '';
+
     $('#areaList').change(function () {
         area_nm = $('#areaList option:selected').val();
         console.log('selected:', area_nm);
@@ -127,7 +114,7 @@
     // ajax 통신 부분
     function ajaxFunc(area_nm) {
         ajax({
-            url: 'adminShowMenuList',
+            url: 'showMenuList',
             type: 'POST',
             data: {
                 area_nm: area_nm
@@ -142,7 +129,7 @@
         })
     }
 
-    // 이부분은 나중에 주문내역 보이도록 현재는 휴게소 정보로 나오도록 일단 해둠 (수정할 것)
+    // 휴게소에 등록된 메뉴 출력
     function drawTable(data) {
         const oldChild = document.querySelector('tbody');
         console.log(oldChild);
@@ -182,15 +169,14 @@
 
     // 추가버튼 이벤트
     function addMenu() {
-        window.open(`./addMenuPopup?area_nm=${area_nm}&food_code=${food_code}`, "open", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=800, height=400");
+        window.open(`./addMenuPopup?area_nm=${area_nm}&food_code=${food_code}`, "open", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=700, height=600");
     }
 
     // 삭제버튼 이벤트
     function deleteMenu(btn) {
         const food_name = btn.parentNode.parentElement.children[1].innerText;
-
         ajax({
-            url: 'adminDeleteMenuInfo',
+            url: 'deleteMenu',
             type: 'POST',
             data: {
                 area_name: area_nm,
@@ -200,12 +186,11 @@
                 console.log(data);
                 if (data == 'Success') {
                     alert('메뉴를 삭제했습니다.');
-                    location.href = '/admin';
+                    location.href = '/menu';
                 } else {
                     alert('[ERROR]메뉴가 삭제되지 않았습니다')
                 }
             }
         });
     }
-
 </script>
