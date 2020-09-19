@@ -11,7 +11,6 @@
     </head>
 
     <body>
-    <div class="container"></div>
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -19,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/home"><i class="fas fa-utensils" style="color:#ffff; font-size:25px"></i></a>
+                <a class="navbar-brand" onclick="history.back()"><i class="fas fa-long-arrow-alt-left" style="color:#ffff; font-size:25px"></i></a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
@@ -29,19 +28,21 @@
             </div>
         </div>
     </nav>
-    <div class="page-header" style="text-align: center;">
-        <h3>휴게소 이름 넣어야함</h3>
-    </div>
+    <div class="container">
+        <div class="page-header">
+            <h3><span id="area_nm"></span>휴게소</h3>
+        </div>
     <div class="well">
         <div class="totalReview" id="totalReviewData" style="text-align:center; top:50%; left:50%"></div>
     </div>
-    <div class="reviews" id="reviewData"></div>
-
+    <div class="page-header"><h3>리뷰</h3></div>
+    <div class="reviews" id="reviewData" style="overflow-y: scroll; overflow-x: hidden; height: 260px;"></div>
+    </div>
 
     <script>
     const qs = getQueryStringObject();
     const area_nm = qs.area_nm;
-
+    document.getElementById("area_nm").innerHTML = area_nm;
     // 리뷰 불러오기 ajax
     $.ajax({
         url: "readReview",
@@ -53,48 +54,49 @@
             var result = JSON.parse(data);
             var total = result[0];
             var list = result.slice(1);
-            console.log(total,list);
-
+            console.log("total : ",total.score);
+            console.log("list : ",list);
+            const div1 = document.getElementById("totalReviewData");
             // 여기서 total 점수랑 list점수 디비에서 읽어서 가져오니까 이걸로 사용해서 그리세요
-            showTotalScore();
-            showReview();
+            showTotalScore(String(total.score));
+            div1.innerHTML += `총 리뷰 ${list.length}개`;
+            showReview(list);
         }
     });
 
-    function showTotalScore(){
+    function showTotalScore(score){
         // 전체 평균평점하고 style하고 크기 조정해주어야함.
-        var score = "3.0";
         var tatalScore = drawStar(score, "3x");
         const div1 = document.getElementById("totalReviewData");
         div1.innerHTML += `<h3>평점</h3>`
         div1.innerHTML += tatalScore;
-        div1.innerHTML += `<br><h3>(${score} / 5.0)</h3>`;
-        div1.innerHTML += `<br><br><br>`
+        div1.innerHTML += `<br><h3>${Math.round(score*10)/10} / 5.0</h3>`;
     }
 
     //사용자 정보 불러오기
-    function showReview(){
+    function showReview(reviewList){
         const div2 = document.getElementById("reviewData");
-        //임의로 5개 원래는 리뷰 개수와 내용대로 출력
-        for(var i=0; i<5; i++){
-            var starImage = drawStar("4.5", "1x");
-            div2.innerHTML +=`<div style="border-top:1px solid black;"><br>`;
+
+        //리뷰 리스트 출력
+        for (i in reviewList){
+            
+            var starImage = drawStar(String(reviewList[i].score), "1x");
+            let phoneNum = reviewList[i].orderer_pn;
+            let formatedPhoneNum = phoneNum.substr(0,7).concat("", '****');
             div2.innerHTML +=
             `
-            <div class="row blockquote review-item" style="margin-left:40px; margin-right:40px">
-                <div class="caption">
-                    <small>by Joe</a></small>
-                </div>
-            <div class="col-md-9">
-                <h4>리뷰 내용<br> ${starImage} </h4>
-                <div class="ratebox text-center" data-id="0" data-rating="5"></div>
-                <p class="review-text">먹은음식 먹은음식 먹은음식</p>
-        
-                <small class="review-date">March 26, 2017</small>
-            </div>                          
+            <div class="container">
+                 <h4><strong>${formatedPhoneNum}</strong> <small>${starImage}</small><br>
+                    <small class="review-date">${reviewList[i].write_time}</small><br><br>
+                    ${reviewList[i].comments}
+                </h4>
+                <br>
+                 <span class="label label-default">김치찌개</span>
+                 <span class="label label-default">부대찌개</span>
+                 <span class="label label-default">어묵우동</span>
             </div>
-            <br><br>`;
-            div2.innerHTML += `</dic>`;
+            <hr>
+            `;
         }
     }
     
@@ -110,6 +112,11 @@
         for (var i = 0; i < n; i++) {
             score_img += `<i class="fas fa-star fa${fontSize}" style="color: orange;"></i>`;
         }
+        if (f != 0.0) {
+            score_img += `<i class="fas fa-star-half-alt fa${fontSize}" style="color: orange;"></i>`;
+        }
+        score_img += `</td>`;
+        return score_img;
     }
 
     // 쿼리스트링 잘라오기
