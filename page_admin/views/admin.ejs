@@ -19,76 +19,61 @@
 </head>
 
 <body id="reportsPage">
-    <div id="home">
-        <!-- 상단(타이틀,네비게이터) -->
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/admin"><i class="fas fa-utensils" style="color:#ffff; font-size:25px"></i></a>
-                </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/admin"><i class="fas fa-home"></i> Home</a></li>
-                    </ul>
-                </div>
+    <!-- 상단(타이틀,네비게이터) -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/admin"><i class="fas fa-utensils"
+                        style="color:#ffff; font-size:25px"></i></a>
             </div>
-        </nav>
-        <div class="container">
-            <div class="page-header">
-                <h1>휴게소 관리 페이지</h1>
-                <a><span onclick="window.location.href = '/admin'">주문내역</span></a>
-                <a><span onclick="window.location.href = '/menu'">메뉴관리</span></a>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/admin"><i class="fas fa-home"></i> Home</a></li>
+                </ul>
             </div>
-            <div>
-                <h3 style="display: inline;">주문 내역</h3>
-                <div class="selectbox" style="float:right">
-                    <select id='areaList'>
-                        <option value='all' selected='selected'>전체</option>
-                    </select>
-                </div>
-            </div>
-            <br>
-            <div class="well">
-                <div class="row">
-        <!-- 중단(내용) -->
-        <div>
-            <!-- 행(row) 시작 -->
-            <div>
-                <!-- 행 내용(row content) 시작 -->
-                <div>
-                    <div>
-
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th scope="col" style="width: 10%;">ORDER TIME</th>
-                                    <th scope="col" style="width: 10%;">ORDER AREA</th>
-                                    <th scope="col" style="width: 30%;">ORDER NO</th>
-                                    <th scope="col" style="width: 20%;">ORDERER PN</th>
-                                    <th scope="col" style="width: 10%;">DETAIL</th>
-                                    <th scope="col" style="width: 10%;">SERVING</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
         </div>
-
-        <!-- 하단 -->
-        <footer>
-            <div>
+    </nav>
+    <div class="container">
+        <div class="page-header">
+            <h3>휴게소 관리 페이지</h3>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="/admin">주문내역</a></li>
+            <li><a href="/menu">메뉴관리</a></li>
+        </ul><br>
+        <div class="form-group">
+            <select class="form-control" id="areaList" style="width: 30%; float: right;">
+                <option value='all' selected='selected'>전체</option>
+            </select>
+        </div>          
+        <br>
+        <br>
+        <div class="well">
+            <div class="container">
+                <table class="table table-responsive" style="width: 90%;">
+                    <thead>
+                        <tr>
+                            <th>ORDER TIME</th>
+                            <th>ORDER AREA</th>
+                            <th>ORDER NO</th>
+                            <th>ORDERER PN</th>
+                            <th>DETAIL</th>
+                            <th>SERVING</thl>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
-        </footer>
+        </div>
     </div>
 </body>
+
 </html>
 
 <!-- [운영자] - 휴게소 종류 셀렉트박스 값 -->
@@ -105,7 +90,7 @@
     // 셀렉트박스 리스트 아이템 붙이기
     function addSelectOption(data) {
         const selectItem = document.getElementById('areaList');
-        for(var i=0; i < data.length; i++) {
+        for (var i = 0; i < data.length; i++) {
             console.log(data[i]);
             var optionItem = document.createElement('option');
             optionItem.innerHTML = data[i].area_nm;
@@ -121,10 +106,10 @@
     const ajax = $.ajax;
     window.onload = ajaxFunc('전체');
     // 주문 완료시 소켓에 데이터 받기
-    
-    $('#areaList').change(function() {
+
+    $('#areaList').change(function () {
         var area_nm = $('#areaList option:selected').val();
-        console.log('selected:',area_nm);
+        console.log('selected:', area_nm);
 
         clearTable();
         ajaxFunc(area_nm);
@@ -136,11 +121,11 @@
             url: 'adminShowOrderList',
             type: 'POST',
             data: {
-                area_nm : area_nm
+                area_nm: area_nm
             },
             success: function (data) {
                 console.log('draw table start!');
-                if(data.length != 0) {
+                if (data.length != 0) {
                     const jsonData = JSON.parse(data);
                     drawTable(jsonData);
                 }
@@ -167,15 +152,19 @@
             td1.innerHTML = data[i].area_nm;
             td2.innerHTML = data[i].order_no;
             td3.innerHTML = data[i].orderer_pn;
-            if(data[i].serving_yn === 'Y') {
+            if (data[i].serving_yn === 'Y') {
                 flag = 'disabled';
                 text = '완료';
+                color = 'warning';
             } else {
                 flag = '';
                 text = '확인';
+                color = 'primary';
             }
-            td4.innerHTML = `<button onclick="showDetail(this)">세부내용</button>`;    // 눌르면 주문 상세내용 나옴
-            td5.innerHTML = `<button onclick="checkOrder(this)" ${flag}>${text}</button>`;        // 눌르면 주문확인 되어 사용자는 결제취소 불가능
+ //           td3.innerHTML = `<button class="btn btn-danger btn-xs" style="height:auto; width:auto; float:right;" onclick="deleteMenu(this)">삭제</button>`;    // 눌르면 주문 상세내용 나옴
+
+            td4.innerHTML = `<button class="btn btn-info btn-xs" onclick="showDetail(this)">세부내용</button>`;    // 눌르면 주문 상세내용 나옴
+            td5.innerHTML = `<button class="btn btn-${color} btn-xs" onclick="checkOrder(this)" ${flag}>${text}</button>`;        // 눌르면 주문확인 되어 사용자는 결제취소 불가능
 
             tr.appendChild(td0);
             tr.appendChild(td1);
@@ -184,7 +173,7 @@
             tr.appendChild(td4);
             tr.appendChild(td5);
 
-            if(data[i].cancel_yn === 'N') {
+            if (data[i].cancel_yn === 'N') {
                 oldChild.appendChild(tr);
             }
         }
@@ -194,8 +183,8 @@
     function clearTable() {
         const oldChild = document.querySelector('tbody');
         // 기존 테이블 내용 삭제
-        while ( oldChild.hasChildNodes() ) { 
-            oldChild.removeChild( oldChild.firstChild );
+        while (oldChild.hasChildNodes()) {
+            oldChild.removeChild(oldChild.firstChild);
         }
     }
 
@@ -215,7 +204,7 @@
             data: {
                 order_no: orderNo,
             },
-            success: function(data) {
+            success: function (data) {
                 // console.log(data);
                 btn.disabled = 'true';
             }
@@ -226,6 +215,6 @@
 
     // 상세주문 팝업 
     function openWin(order_no) {
-        window.open(`./orderDetail?order_no=${order_no}`,"open","toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400");
+        window.open(`./orderDetail?order_no=${order_no}`, "open", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400");
     }
 </script>
