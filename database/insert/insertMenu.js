@@ -35,6 +35,7 @@ async function insertLoop (connection) {
 
     for(var i in menu) {
       const SQL = {
+        stdRestNm: menu[i].stdRestNm,
         food_code: menu[i].stdRestCd + 'F' + formatNum(i),
         food_nm: menu[i].foodNm,
         food_price: menu[i].foodCost,
@@ -42,8 +43,7 @@ async function insertLoop (connection) {
         best_yn: menu[i].bestfoodyn,
         premium_yn: menu[i].premiumyn,
         season_yn: menu[i].seasonMenu,
-        stdRestCd: menu[i].stdRestCd,
-        stdRestNm: menu[i].stdRestNm,
+        stdRestCd: menu[i].stdRestCd
       }
   
       insertMenu(connection, SQL);

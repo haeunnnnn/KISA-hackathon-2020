@@ -47,6 +47,7 @@ function createOrderInfo (connection) {
             pay_id varchar(40) not null,
             area_nm varchar(30) character set utf8 not null,
             total_cost int not null,
+            takeout_yn varchar(1) not null default 'N',
             serving_yn varchar(1) not null default 'N',
             cancel_yn varchar(1) not null default 'N'
         )`,
@@ -86,6 +87,7 @@ function createFoodInfo (connection) {
     return new Promise( (resolve, reject) => {
         connection.query(
         `CREATE TABLE food_info_tb (
+            stdRestNm varchar(50) not null,
             food_code varchar(14) primary key,
             food_nm varchar(30) not null,
             food_price int(5) not null,
@@ -93,8 +95,7 @@ function createFoodInfo (connection) {
             best_yn varchar(1) default 'N',
             premium_yn varchar(1) default 'N',
             season_yn varchar(1) default 'N',
-            stdRestCd varchar(10) not null,
-            stdRestNm varchar(50) not null
+            stdRestCd varchar(10) not null
         )`,
         function(error, result, fields) {
             if(error) {
@@ -115,7 +116,7 @@ function createReviewInfo (connection) {
             orderer_pn varchar(13) not null,
             area_nm varchar(30) character set utf8 not null,
             score decimal(2,1) not null,
-            comments varchar(100) character set utf8,             
+            comments varchar(200) character set utf8,             
             write_time datetime default now()
         )`,
         function(error, result, fields) {

@@ -37,8 +37,8 @@
     showReview();
 
     function showTotalScore(){
-        var score = "3.0";
         // 전체 평균평점하고 style하고 크기 조정해주어야함.
+        var score = drawStar("3.0");
         var tatalScore = drawStar(score);
         const div1 = document.getElementById("totalReviewData");
         div1.innerHTML += `<br><h3>평점</h3>`
@@ -51,7 +51,6 @@
     //사용자 정보 불러오기
     function showReview(){
         const div2 = document.getElementById("reviewData");
-
         //임의로 5개 원래는 리뷰 개수와 내용대로 출력
         for(var i=0; i<5; i++){
             var starImage = drawStar("4.5");

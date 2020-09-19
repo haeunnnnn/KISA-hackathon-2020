@@ -336,6 +336,7 @@
         return radians;
     }
 
+    
     // 정보보기, 메뉴보기 버튼 클릭시 이벤트처리 및 예외처리
     function showAreaInfo(btn) {
         const checkedArea = $("input:radio[name=area_code]:checked").val();
@@ -350,9 +351,9 @@
 
             const btnId = btn.id;
             if(btn.id == 'btnShowInfo') {
-                window.location.href = `/restAreaInfo?area_code=${code}`;
+                window.location.href = `/restAreaInfo?area_code=${code}&area_nm=${name}`;
             } else {
-                window.location.href = `/menuList?area_nm=${name}`;
+                window.location.href = `/menuList?area_code=${code}&area_nm=${name}`;
             }
         }
     }
