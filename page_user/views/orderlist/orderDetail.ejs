@@ -86,9 +86,9 @@
               <tbody>
                 <tr>
                   <td>${food_nm}</td>
-                  <td>${food_price}</td>
+                  <td>${numberWithCommas(food_price)}</td>
                   <td>${food_cnt}</td>
-                  <td>${total_price}</td>
+                  <td>${numberWithCommas(total_price)}</td>
                 </tr>
               </tbody>
                 `;
@@ -114,7 +114,7 @@
               </h5>
               <h5>
                 <small>
-                  <span>${cost}</span>
+                  <span>${numberWithCommas(cost)}</span>
                   원
                 </small>
               </h5>
@@ -140,6 +140,15 @@
         return b;
     }
 
+    // 숫자 to 금액
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // 금액 to 숫자
+    function numberWithoutCommas(x) {
+        return x.toString().replace(",", '');
+    }
 </script>
 
 

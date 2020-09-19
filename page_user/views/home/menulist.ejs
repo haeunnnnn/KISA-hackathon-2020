@@ -72,6 +72,7 @@
     function resultMenuList(data) {
       var html = "<div style='text-align: center'><h4><i class='far fa-check-circle' style='font-size:25px; color:#327BE3; padding-right:10px'></i>"+ data[0].stdRestNm +"에서 주문하기</h5></div><br>";
       $.each(data, function (key, value) {
+        var food_cost = numberWithCommas(value.food_price);
         html += "<div class='panel panel-default'>";
         html += "<div class='panel-body'>";
         html += "<div style='padding-left:20px;'> <h4>" + value.food_nm;
@@ -79,7 +80,7 @@
           html += "<i class='fas fa-star' style='color:#FDB612'></i>";
         }
         html += "</h4>";
-        html += "<p class='card-text' id=cost> " + value.food_price + "원</p></div><br>";
+        html += "<p class='card-text' id=cost> " + food_cost + "원</p></div><br>";
         html += "<div class='container'>";
         html += "<div class='row'>";
         html += `<div class="col-xs-6">
@@ -127,7 +128,7 @@
 
       item = {
         item_name: data.childNodes[0].childNodes[1].innerText,
-        price: parseInt(data.childNodes[0].childNodes[2].innerText),
+        price: parseInt(numberWithoutCommas(data.childNodes[0].childNodes[2].innerText)),
         qty: parseInt(count.firstChild.childNodes[3].value),
         unique: array.length.toString(),
       };
@@ -166,6 +167,16 @@
         }
       }
       return b;
+    }
+
+    // 숫자 to 금액
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // 금액 to 숫자
+    function numberWithoutCommas(x) {
+      return x.toString().replace(",", '');
     }
   </script>
 </body>

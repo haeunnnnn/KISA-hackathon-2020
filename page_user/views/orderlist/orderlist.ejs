@@ -140,7 +140,7 @@
                             <div class="panel-body">
                                 <h4>${area_nm}</h4>
                                 <h4 style="font-size: 1.3rem;">${order_no}</h4>
-                                <h4><small><span>총 결제 금액 : </span><span>${total_cost}</span>원</small></h4>
+                                <h4><small><span>총 결제 금액 : </span><span>${numberWithCommas(total_cost)}</span>원</small></h4>
                                 <br>
                                 <button onClick='openWin(this)' class="btn btn-info">주문상세</button>
                                 <button onClick='cancelOrder(this)' class="btn btn-danger" style='display: ${cancleFlag};'>주문취소</button>
@@ -198,5 +198,15 @@
     } else {
       return false;
     }
+  }
+
+  // 숫자 to 금액
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  // 금액 to 숫자
+  function numberWithoutCommas(x) {
+      return x.toString().replace(",", '');
   }
 </script>
