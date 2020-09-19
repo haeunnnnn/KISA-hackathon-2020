@@ -312,6 +312,17 @@ app.post('/readReview', function(req, res) {
   })
 })
 
+// 리뷰보기 화면에서 주문번호 마다 먹은 음식 가져오기
+app.post('/readReviewFood', function(req, res) {
+  const order_no = req.body.order_no;
+  connection.query('SELECT food_nm FROM order_food_info_tb WHERE order_no = ?', [order_no], function(error, results, fields) {
+    if(error) {
+      throw(error);
+    } else {
+      res.send(JSON.stringify(results));
+    }
+  })
+})
 
 
 // 클라이언트에서 결제 요청
@@ -321,6 +332,7 @@ app.post('/requestPayment', async function(req, res) {
   const phone = req.body.phone;
   const items = JSON.parse(req.body.items);
   const receiptId = req.body.receipt_id;
+  const take = req.body.takeout;
 
   console.log("orderNo start");
   const orderNo = await getOrderNo();
@@ -340,7 +352,7 @@ app.post('/requestPayment', async function(req, res) {
           console.log(_response.status);
           
           // DB에 삽입
-          insertOrderList(name, price, phone, items, receiptId, orderNo);
+          insertOrderList(name, price, phone, items, receiptId, orderNo, take);
 
           const result = {
             receipt_id: _response.data.receipt_id,
@@ -356,12 +368,13 @@ app.post('/requestPayment', async function(req, res) {
 })
 
 // 주문 확인시 주문테이블에 삽입
-async function insertOrderList (name, price, phone, items, pay_id, orderNo) {
+async function insertOrderList (name, price, phone, items, pay_id, orderNo, take) {
   const totalCost = price;
   const areaNm = name;
   const payId = pay_id;
   const phoneNo = phone;  
   const jsonData = items;
+  const takeout_yn = take;
 
   // 결제가 완료되면 DB에 INSERT
   const SQL1 = {
@@ -371,7 +384,8 @@ async function insertOrderList (name, price, phone, items, pay_id, orderNo) {
     area_nm: areaNm,
     total_cost: totalCost,
     serving_yn: 'N',
-    cancel_yn: 'N'
+    cancel_yn: 'N',
+    takeout_yn: takeout_yn
   };
   // 주문정보 INSERT
   connection.query("INSERT INTO order_info_tb SET ? ", SQL1, function (error, result, fields) {
