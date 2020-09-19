@@ -58,6 +58,7 @@
   });
 
   const list = ["one", "two", "three", "four", "five"];
+  const qs = getQueryStringObject();
 
   list.forEach((element, index) => {
     document.getElementById(element).addEventListener("click", () => {
@@ -78,10 +79,13 @@
     });
   });
 
+  // 작성버튼
   $("#writeBtn").click(() => {
     let date = new Date();
     let data = {
-      phoneNumber: "01012341234", // 하드코딩
+      orderNumber: qs.order_no,
+      phoneNumber: qs.phone_no, // 하드코딩
+      areaName: qs.area_nm,
       rate: document.getElementsByClassName("checked").length,
       message: document.getElementById("message").value,
       date: date.format(),
@@ -94,8 +98,10 @@
         data,
         success: function (data) {
           console.log(data);
-          alert("작성되었습니다.");
-          self.close();
+          if(data == 'Success') {
+            alert("작성되었습니다.");
+            self.close();
+          }
         },
       });
     } else {
@@ -110,4 +116,20 @@
     let date = this.getDate().toString();
     return year + "-" + (month[1] ? month : "0" + month[0]) + "-" + (date[1] ? date : "0" + date[0]);
   };
+
+  // 쿼리스트링 잘라오기
+  function getQueryStringObject() {
+        var a = window.location.search.substr(1).split('&');
+        if (a == "") return {};
+        var b = {};
+        for (var i = 0; i < a.length; ++i) {
+            var p = a[i].split('=', 2);
+            if (p.length == 1) {
+                b[p[0]] = "";
+            } else {
+                b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+            }
+        }
+        return b;
+    }
 </script>
