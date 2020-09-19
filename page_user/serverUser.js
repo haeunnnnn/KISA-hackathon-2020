@@ -47,6 +47,12 @@ function serverUser() {
 // =================================================== 사 용 자 =========================================================
 
 //전화번호 입력받는 첫 화면
+app.get("/", function (req, res) {
+  res.render("./main");
+});
+
+
+//전화번호 입력받는 첫 화면
 app.get("/main", function (req, res) {
   res.render("./main");
 });
@@ -187,6 +193,7 @@ app.post("/requestOrderInfo", function (req, res) {
       }
     });
   })
+
 
 // 주문번호 만들기
 async function getOrderNo() {

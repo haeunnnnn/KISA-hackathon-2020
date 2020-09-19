@@ -78,6 +78,7 @@
     </div>
   </body>
   <script>
+
     $(document).ready(function(){
         $("#myBtn").click(function(){
             $("#myModal").modal();
@@ -86,6 +87,8 @@
 
     // YES 버튼 눌렀을때 home 이동
     $("#btnYes").click(function () {
+      var temp = document.getElementById("phoneNumber").value;
+      localStorage.setItem("userPhoneNum", temp );
       window.location.href = "/home";
     });
   </script>

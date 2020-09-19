@@ -104,9 +104,11 @@
 
 <!-- [운영자] - 휴게소에 들어온 주문내역 DB에 접근해서 Table 형태로 그리기 -->
 <script>
+
     const ajax = $.ajax;
     window.onload = ajaxFunc('전체');
-
+    // 주문 완료시 소켓에 데이터 받기
+    
     $('#areaList').change(function() {
         var area_nm = $('#areaList option:selected').val();
         console.log('selected:',area_nm);

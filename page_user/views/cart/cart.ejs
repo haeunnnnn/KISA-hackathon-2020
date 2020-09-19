@@ -193,30 +193,10 @@
     // 결제하기
     $("#payBtn").click(() => {
       // 전화번호 입력시 숫자만 & 11자리 입력 예외처리
-      var phone_no;
+      var phone_no = localStorage.getItem('userPhoneNum');
       var formatted_phone_no;
-
-      while (1) {
-        phone_no = prompt("핸드폰번호 입력");
-        if (phone_no == null) {
-          // 번호 입력 안하고 취소
-          break;
-        } else {
-          // 번호 입력 후 확인
-          var reg = /^[0-9]*$/;
-          if (!reg.test(phone_no)) {
-            alert("숫자만 입력하세요");
-          } else {
-            if (phone_no.length != 11) {
-              alert("핸드폰번호 11자리를 입력해주세요.");
-            } else {
-              // 받은 전화번호 포맷팅
-              formatted_phone_no = phone_no.slice(0, 3) + "-" + phone_no.slice(3, 7) + "-" + phone_no.slice(7);
-              break;
-            }
-          }
-        }
-      }
+      debugger;
+      formatted_phone_no = phone_no.slice(0, 3) + "-" + phone_no.slice(3, 7) + "-" + phone_no.slice(7);
 
       let order_no;
       let totalPrice = 0;
@@ -307,6 +287,17 @@
           //결제가 정상적으로 완료되면 수행됩니다
           //비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
           console.log("결제완료", data);
+          
+          // 주문 완료시 소켓 통신 해서 서버에 알림 보냄
+          // var ws = new WebSocket('ws://localhost:3100');
+          // ws.onopen = function(event) {
+          //   ws.send('orderIn');
+          // }
+          // ws.onmessage = function(event) {
+          //   console.log("[client] 요리 시작함", event.data);
+          //   alert('조리를 시작하였습니다 15분 소요됩니다.');
+          // }
+
           window.location.href = `/cartOk?order_no=${order_no}&area_nm=${data.item_name}&total_cost=${data.amount}`;
         });
     });
@@ -327,6 +318,7 @@
     });
   });
 
+  // 쿼리스트링 자르기
   function getQueryStringObject() {
     var a = window.location.search.substr(1).split("&");
     if (a == "") return {};

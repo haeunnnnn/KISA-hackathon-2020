@@ -53,14 +53,6 @@
                       <option class="wholeDate">전체</option>
                     </select>
                   </div>
-                  <div class="input-group">
-                    <input id="phoneNum" type="text" class="form-control" placeholder="번호 11자리를 입력해주세요." />
-                    <div class="input-group-btn">
-                      <button id="btnSearch" class="btn btn-default">
-                        <i class="glyphicon glyphicon-search"></i>
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -83,25 +75,18 @@
 
 <script>
   const ajax = $.ajax;
-  
+  const phoneNum = localStorage.getItem('userPhoneNum');
   // 핸드폰번호 입력후 검색 버튼 클릭시 이벤트
-  $("#btnSearch").click(function () {
+  ajaxFunc('오늘');
+
+  $('#gigan').change(function() {
     const gigan = $("#gigan option:selected").val();
-    const phoneNum = document.getElementById("phoneNum").value;
-
-    try {
-      if (phoneNum.length < 11 || phoneNum.length > 11) {
-        throw "NaNEX";
-      }
-    } catch (ex) {
-      if (ex == "NaNEX") {
-        document.getElementById("phoneNum").value = null;
-        alert("잘못 입력하셨습니다.");
-      }
-    }
     console.log(gigan);
-    console.log(phoneNum);
 
+    ajaxFunc(gigan);
+  });
+
+  function ajaxFunc(gigan) {
     ajax({
       url: "requestOrderList",
       type: "POST",
@@ -114,7 +99,7 @@
         drawOrderList(data);
       },
     });
-  });
+  }
 
   // 주문내역 리스트 그리기
   function drawOrderList(data) {
@@ -185,9 +170,8 @@
   function writeReview(btn) {
     const order_no = btn.parentNode.childNodes[3].innerHTML;
     const area_nm = btn.parentNode.childNodes[1].innerHTML;
-    const phone_no = document.getElementById("phoneNum").value;
     window.open(
-      `./writeReview?order_no=${order_no}&phone_no=${phone_no}&area_nm=${area_nm}`,
+      `./writeReview?order_no=${order_no}&phone_no=${phoneNum}&area_nm=${area_nm}`,
       "open",
       "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400"
     );
