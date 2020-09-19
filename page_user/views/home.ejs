@@ -282,7 +282,14 @@
 
         for (i in results) {
             var restArea_roadName = results[i].road_nm;
-            var new_roadName = restArea_roadName.substring(0, restArea_roadName.length - 1);
+            var idx = restArea_roadName.indexOf("선");
+            var new_roadName;
+            if(idx != -1){
+                new_roadName = restArea_roadName.substring(0, restArea_roadName.length - 1);
+            }
+            else{
+                new_roadName = restArea_roadName;
+            }
             if (new_roadName == rName) {
                 var distance = {
                     lat: results[i].latitude,
