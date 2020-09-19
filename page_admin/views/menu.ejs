@@ -21,14 +21,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/home"><i class="fas fa-utensils"
-                        style="color:#ffff; font-size:25px"></i></a>
+                <a class="navbar-brand" href="/admin"><i class="fas fa-home" style="color:#ffff; font-size:25px"></i></a>
             </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
+            <!-- <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/admin"><i class="fas fa-home"></i> Home</a></li>
                 </ul>
-            </div>
+            </div> -->
         </div>
     </nav>
 
@@ -73,17 +72,6 @@
 </body>
 
 </html>
-
-<script src="js/jquery-3.3.1.min.js"></script>
-<!-- https://jquery.com/download/ -->
-<script src="js/moment.min.js"></script>
-<!-- https://momentjs.com/ -->
-<script src="js/Chart.min.js"></script>
-<!-- http://www.chartjs.org/docs/latest/ -->
-<script src="js/bootstrap.min.js"></script>
-<!-- https://getbootstrap.com/ -->
-<script src="js/tooplate-scripts.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- [운영자] - 휴게소 종류 셀렉트박스 값 -->
 <script>
@@ -182,13 +170,12 @@
 
     // 추가버튼 이벤트
     function addMenu() {
-        window.open(`./addMenuPopup?area_nm=${area_nm}&food_code=${food_code}`, "open", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=800, height=400");
+        window.open(`./addMenuPopup?area_nm=${area_nm}&food_code=${food_code}`, "open", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=700, height=600");
     }
 
     // 삭제버튼 이벤트
     function deleteMenu(btn) {
         const food_name = btn.parentNode.parentElement.children[1].innerText;
-
         ajax({
             url: 'adminDeleteMenuInfo',
             type: 'POST',
@@ -200,7 +187,7 @@
                 console.log(data);
                 if (data == 'Success') {
                     alert('메뉴를 삭제했습니다.');
-                    location.href = '/admin';
+                    location.href = '/menu';
                 } else {
                     alert('[ERROR]메뉴가 삭제되지 않았습니다')
                 }

@@ -28,14 +28,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/admin"><i class="fas fa-utensils"
-                        style="color:#ffff; font-size:25px"></i></a>
+                <a class="navbar-brand" href="/admin"><i class="fas fa-home" style="color:#ffff; font-size:25px"></i></a>
             </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
+            <!-- <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/admin"><i class="fas fa-home"></i> Home</a></li>
                 </ul>
-            </div>
+            </div> -->
         </div>
     </nav>
     <div class="container">
@@ -58,12 +57,13 @@
                 <table class="table table-responsive" style="width: 90%;">
                     <thead>
                         <tr>
-                            <th>ORDER TIME</th>
-                            <th>ORDER AREA</th>
-                            <th>ORDER NO</th>
-                            <th>ORDERER PN</th>
-                            <th>DETAIL</th>
-                            <th>SERVING</thl>
+                            <th>주문시간</th>
+                            <th>휴게소이름</th>
+                            <th>주문번호</th>
+                            <th>주문자번호</th>
+                            <th>포장여부</th>
+                            <th>주문내역</th>
+                            <th>주문확인</thl>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,6 +147,7 @@
             var td3 = document.createElement('td');
             var td4 = document.createElement('td');
             var td5 = document.createElement('td');
+            var td6 = document.createElement('td');
 
             td0.innerHTML = data[i].order_time;
             td1.innerHTML = data[i].area_nm;
@@ -162,9 +163,16 @@
                 color = 'primary';
             }
  //           td3.innerHTML = `<button class="btn btn-danger btn-xs" style="height:auto; width:auto; float:right;" onclick="deleteMenu(this)">삭제</button>`;    // 눌르면 주문 상세내용 나옴
+            var takeout = '';
+            if(data[i].takeout_yn === 'Y') {
+                takeout = '포장';
+            } else {
+                takeout = '';
+            }
 
-            td4.innerHTML = `<button class="btn btn-info btn-xs" onclick="showDetail(this)">세부내용</button>`;    // 눌르면 주문 상세내용 나옴
-            td5.innerHTML = `<button class="btn btn-${color} btn-xs" onclick="checkOrder(this)" ${flag}>${text}</button>`;        // 눌르면 주문확인 되어 사용자는 결제취소 불가능
+            td4.innerHTML = takeout;
+            td5.innerHTML = `<button class="btn btn-info btn-xs" onclick="showDetail(this)">세부내용</button>`;    // 눌르면 주문 상세내용 나옴
+            td6.innerHTML = `<button class="btn btn-${color} btn-xs" onclick="checkOrder(this)" ${flag}>${text}</button>`;        // 눌르면 주문확인 되어 사용자는 결제취소 불가능
 
             tr.appendChild(td0);
             tr.appendChild(td1);
@@ -172,6 +180,7 @@
             tr.appendChild(td3);
             tr.appendChild(td4);
             tr.appendChild(td5);
+            tr.appendChild(td6);
 
             if (data[i].cancel_yn === 'N') {
                 oldChild.appendChild(tr);

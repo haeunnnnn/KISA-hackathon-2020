@@ -66,6 +66,10 @@ function cookStart() {
 // =================================================== 휴 게 소 =========================================================
 
 // 휴게소 측 홈 화면
+app.get("/", function (req, res) {
+  res.render("./admin");
+});
+// 휴게소 측 홈 화면
 app.get("/admin", function (req, res) {
   res.render("./admin");
 });
