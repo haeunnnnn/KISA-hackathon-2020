@@ -183,6 +183,7 @@ app.post("/requestOrderInfo", function (req, res) {
     });
   })
 
+
 // 주문번호 만들기
 async function getOrderNo() {
   // 오늘 날짜 yyyymmdd 형태로 만들기
