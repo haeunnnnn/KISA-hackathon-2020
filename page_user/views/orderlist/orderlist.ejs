@@ -126,7 +126,6 @@
       const pay_id = data[i].pay_id;
       const cancel_yn = data[i].cancel_yn;
       const serving_yn = data[i].serving_yn;
-      let flag = "";
 
       let order_date = order_no.substr(2, 8);
       var formatted = order_date.slice(0, 4) + "-" + order_date.slice(4, 6) + "-" + order_date.slice(6);
@@ -173,7 +172,14 @@
       "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400"
     );
   }
-
+  function writeReview(btn) {
+    const order_no = btn.parentNode.childNodes[3].innerHTML;
+    window.open(
+      `./writeReview?order_no=${order_no}`,
+      "open",
+      "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400"
+    );
+  }
   // 주문취소 프로세스
   function cancelOrder(btn) {
     const order_no = btn.parentNode.childNodes[3].innerHTML;
