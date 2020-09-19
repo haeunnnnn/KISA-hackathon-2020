@@ -133,7 +133,7 @@
                     </th>
                 <tr>
              </thead>`;
-    var score_img = drawStar();
+    var score_img = drawStar("3.5");
     const tbody = `<tbody>
                 <tr>
                     <td><i class="fas fa-parking" style="color: Tomato;"></i></td>
@@ -174,8 +174,8 @@
     var map = new naver.maps.Map(mapContainer, mapOption);
   }
 
-  function drawStar() {
-    var avg_score = "3.2"; // DB에서 평균평점 받아와야함
+  function drawStar(avg_score) {
+    //var avg_score = "3.2"; // DB에서 평균평점 받아와야함
     var n;
     var f;
     avg_score = avg_score.split("."); // [ 3, 5]
