@@ -69,7 +69,7 @@ app.get("/readReview", function(request, response){
 
 //리뷰 쓰기 화면
 app.get("/writeReview", function(request, response){
-  response.render("views/review/writeReview");
+  response.render("./review/writeReview");
 });
 
 //메뉴고르고 결제할때 화면
