@@ -63,6 +63,12 @@ app.get("/home", function (req, res) {
   res.render("./home");
 });
 
+//사용자 측 홈 화면
+app.get("/arealist", function (req, res) {
+  res.render("./arealist");
+});
+
+
 // 휴게소 정보 화면
 app.get("/restAreaInfo", function (req, res) {
   res.render("./home/restAreaInfo");
@@ -149,6 +155,30 @@ app.post("/requestMenuInfo", function(req, res) {
   });
 });
 
+// 전체 휴게소 목록
+app.post('/showAllRestareaList', function(req,res) {
+  let road_nm = (req.body.road_nm == '전체' ? '%' : req.body.road_nm);
+  console.log(road_nm);
+  connection.query('SELECT * FROM restarea_info_tb WHERE road_nm LIKE ? ORDER BY area_nm', [road_nm], function(error, result, fields) {
+    if(error) {
+      throw error;
+    } else {
+      res.send(JSON.stringify(result));
+    }
+  });
+})
+
+// 전체 도로 목록
+app.post('/showRoadList', function(req,res) {
+  connection.query('SELECT DISTINCT(road_nm) FROM restarea_info_tb', function(error, results, fields) {
+    if(error) {
+      throw(error);
+    } else {
+      res.send( JSON.stringify(results) );
+    }
+  })
+})
+
 // 사용자 번호 입력받아서 주문내역 반환
 app.post("/requestOrderList", function (req, res) {
   const phone_no = req.body.phone_no;
@@ -184,7 +214,6 @@ app.post("/requestOrderList", function (req, res) {
 // 주문번호 받아서 주문상세 내역 반환
 app.post("/requestOrderInfo", function (req, res) {
     const order_no = req.body.order_no;
-    
     connection.query('SELECT * FROM order_food_info_tb WHERE order_no = ?', [order_no], function(error, result, fields) {
       if(error) { 
         throw error;
