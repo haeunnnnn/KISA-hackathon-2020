@@ -39,7 +39,7 @@
           <!-- 휴게소 정보 출력 -->
         </div>
         <div class="container" style="align-items: center">
-          <div id="NaverMap" style="width: 80%; height: 350px; margin-left: 5%"></div>
+          <div id="NaverMap" style="width: 80%; height: 400px; margin-left: 5%"></div>
         </div>
         <script
           type="text/javascript"
@@ -171,17 +171,17 @@
     var mapContainer = document.getElementById("NaverMap"); // 지도를 표시할 div
     var mapOption = {
       center: new naver.maps.LatLng(results["latitude"], results["longitude"]), //지도의 중심좌표
-      zoom: 14,
+      zoom: 17,
     };
     // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
     var map = new naver.maps.Map(mapContainer, mapOption);
-    var marker = new naver.maps.Marker({
-      map: map,
-      position: new naver.maps.LatLng(results["latitude"], results["longitude"]),
-      //title: areaInfo.name,
-      //clickable : true
-    });
-    marker.setMap(map);
+    // var marker = new naver.maps.Marker({
+    //   map: map,
+    //   position: new naver.maps.LatLng(results["latitude"], results["longitude"]),
+    //   //title: areaInfo.name,
+    //   //clickable : true
+    // });
+    // marker.setMap(map);
   }
 
   function drawStar() {
