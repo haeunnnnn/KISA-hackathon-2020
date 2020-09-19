@@ -193,30 +193,10 @@
     // 결제하기
     $("#payBtn").click(() => {
       // 전화번호 입력시 숫자만 & 11자리 입력 예외처리
-      var phone_no;
+      var phone_no = localStorage.getItem('userPhoneNum');
       var formatted_phone_no;
-
-      while (1) {
-        phone_no = prompt("핸드폰번호 입력");
-        if (phone_no == null) {
-          // 번호 입력 안하고 취소
-          break;
-        } else {
-          // 번호 입력 후 확인
-          var reg = /^[0-9]*$/;
-          if (!reg.test(phone_no)) {
-            alert("숫자만 입력하세요");
-          } else {
-            if (phone_no.length != 11) {
-              alert("핸드폰번호 11자리를 입력해주세요.");
-            } else {
-              // 받은 전화번호 포맷팅
-              formatted_phone_no = phone_no.slice(0, 3) + "-" + phone_no.slice(3, 7) + "-" + phone_no.slice(7);
-              break;
-            }
-          }
-        }
-      }
+      debugger;
+      formatted_phone_no = phone_no.slice(0, 3) + "-" + phone_no.slice(3, 7) + "-" + phone_no.slice(7);
 
       let order_no;
       let totalPrice = 0;
