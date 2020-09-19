@@ -79,24 +79,49 @@
 
         //리뷰 리스트 출력
         for (i in reviewList){
+            let foodList = new Array();
+
+            $.ajax({
+                url: "readReviewFood",
+                type: "POST",
+                data: {
+                    order_no: reviewList[i].order_no
+                },
+                success: function (data) {
+                    var temp = JSON.parse(data);
+                    console.log(temp);
+                    foodList = temp.slice();
+                    console.log(foodList);
+
+                    var starImage = drawStar(String(reviewList[i].score), "1x");
+                    let phoneNum = reviewList[i].orderer_pn;
+                    let formatedPhoneNum = phoneNum.substr(0,7).concat("", '****');
+
+                    div2.innerHTML +=
+                    `
+                    <div class="container">
+                        <h4>
+                            <strong>${formatedPhoneNum}</strong> <small>${starImage}</small><br>
+                            <small class="review-date">${reviewList[i].write_time.substr(0,10)}</small><br><br>
+                            ${reviewList[i].comments}
+                        </h4>
+                        <br>
+                    `;
+
+                    for(var j in foodList) {
+                        console.log(foodList[j].food_nm);
+                        div2.innerHTML += `<span class="label label-default">${foodList[j].food_nm}</span>`;
+                    }
+
+                    div2.innerHTML += 
+                    `
+                    </div>
+                    <hr>
+                    `;
+                }
+            });
+
             
-            var starImage = drawStar(String(reviewList[i].score), "1x");
-            let phoneNum = reviewList[i].orderer_pn;
-            let formatedPhoneNum = phoneNum.substr(0,7).concat("", '****');
-            div2.innerHTML +=
-            `
-            <div class="container">
-                 <h4><strong>${formatedPhoneNum}</strong> <small>${starImage}</small><br>
-                    <small class="review-date">${reviewList[i].write_time}</small><br><br>
-                    ${reviewList[i].comments}
-                </h4>
-                <br>
-                 <span class="label label-default">김치찌개</span>
-                 <span class="label label-default">부대찌개</span>
-                 <span class="label label-default">어묵우동</span>
-            </div>
-            <hr>
-            `;
         }
     }
     
