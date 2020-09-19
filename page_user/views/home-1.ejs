@@ -62,26 +62,45 @@
     let rName;
 
     const latlng = [{
-        lat : 37.251750,
-        lon : 127.346048,
+        lat : 37.271235,
+        lon : 127.397761,
     },{
-        lat : 37.244542,
-        lon : 127.359095,
+        lat : 37.262246,
+        lon : 127.407477,
     },{
-        lat:37.240333,
-        lon:127.379900,
+        lat:37.256532,
+        lon:127.412500,
     },{
-        lat:37.240572,
-        lon:127.411220,
+        lat:37.246788,
+        lon:127.423144,
     },{
-        lat:37.238324,
-        lon:127.422146,
+        lat:37.235410,
+        lon:127.428199,
     },{
-        lat:37.232590,
-        lon:127.427939,
+        lat:37.235033,
+        lon:127.438346,
     },{
-        lat:37.226443,
-        lon:127.429825,
+        lat:37.242396,
+        lon:127.466949,
+    },{
+        lat:37.244670,
+        lon:127.502153,
+    },{
+        lat:37.242827,
+        lon:127.521894,
+    },{
+        lat:37.234070,
+        lon:127.585116,
+    },{
+        lat:37.238657,
+        lon:127.588050,
+    },{
+        lat:37.261072,
+        lon:127.586121,
+    },{
+        lat:37.275507,
+        lon:127.579957,
+        
     }];
 
     let map = showMap(latlng[0]);
@@ -95,7 +114,7 @@
         success: function (data) {
             const results = JSON.parse(data);
             drawRestAreaMarker(results, map);
-            for(var i=0;i<7; i++){
+            for(var i=0;i<latlng.length; i++){
                 (function(i){
                     setTimeout(function(){
                         map.setCenter(new naver.maps.LatLng(latlng[i].lat, latlng[i].lon));
@@ -127,7 +146,7 @@
                                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                             }
                         });
-                    },2000*i)
+                    },3000*i)
                 })(i);
             }
         }
@@ -137,7 +156,7 @@
     function showMap(latlng){
         var mapOptions = {
         center: new naver.maps.LatLng(latlng.lat, latlng.lon),
-        zoom: 17
+        zoom: 13
         };
         var map = new naver.maps.Map('NaverMap', mapOptions);
         return map;
@@ -146,8 +165,8 @@
     //사용자 위치 마커 띄우기
     function showUserMarker(map, latlng){
         var icon = {
-            content : `<i class="fas fa-car-side fa-2x"></i>`,
-            size: new naver.maps.Size(70, 70),
+            content : `<i class="fas fa-circle fa-sm" style="color:red"></i>`,
+            size: new naver.maps.Size(10, 10),
             anchor: new naver.maps.Point(0, 0)
         };
         var marker = new naver.maps.Marker({
@@ -172,7 +191,14 @@
 
         for (i in results) {
             var restArea_roadName = results[i].road_nm;
-            var new_roadName = restArea_roadName.substring(0, restArea_roadName.length - 1);
+            var idx = restArea_roadName.indexOf("선");
+            var new_roadName;
+            if(idx != -1){
+                new_roadName = restArea_roadName.substring(0, restArea_roadName.length - 1);
+            }
+            else{
+                new_roadName = restArea_roadName;
+            }
             if (new_roadName == rName) {
                 var distance = {
                     lat: results[i].latitude,
