@@ -69,9 +69,15 @@
               <div class="modal-body" id="printNum" style="text-align:center;">
               </div>
               <div class="modal-footer">
-                <button type="button" id="btnYes"class="btn btn-success" data-dismiss="modal">YES</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
-            </div>
+                <div class="row">
+                  <div class="col-xs-6">
+                    <button type="button" id="btnYes"class="btn btn-success" data-dismiss="modal">YES</button>
+                  </div>
+                  <div class="col-xs-2">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
+                  </div>
+                </div>
+              </div>
           </div>
         </div>
       </form>
@@ -81,7 +87,12 @@
 
     $(document).ready(function(){
         $("#myBtn").click(function(){
+          let phoneNum = document.getElementById('phoneNumber').value;
+          if (phoneNum.length == 11) {
             $("#myModal").modal();
+          } else {
+            alert("전화번호 형식이 아닙니다.")
+          }
         });
     });
 
@@ -113,7 +124,7 @@
 
    function printNumber(){
     var div1 = document.getElementById("printNum");
-    div1.innerHTML = `<p>입력하신 번호가 ${pNumber}가 맞으신가요?</p>`;
+    div1.innerHTML = `<p>입력하신 번호가<br><strong>${pNumber}</strong><br>가 맞으신가요?</p>`;
   }
   </script>
 </html>
