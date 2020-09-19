@@ -46,10 +46,10 @@
           </div>
           <hr />
           <div class="row" style="text-align: right; margin-right: 10px">
-            <div class="radio">
-              <label><input type="radio" name="optradio" checked /><strong>매장에서 식사</strong></label>
+            <div class="radio" name="take">
+              <label><input type="radio" name="radio_button" value="N" checked /><strong>매장에서 식사</strong></label>
               &nbsp;&nbsp;&nbsp;
-              <label><input type="radio" name="optradio" /><strong>포장하기</strong></label>
+              <label><input type="radio" name="radio_button" value="Y" /><strong>포장하기</strong></label>
             </div>
           </div>
           <div class="row" style="text-align: right; margin-right: 10px">
@@ -222,6 +222,8 @@
       let totalPrice = 0;
       let orderList = [];
       let orderListCnt = document.getElementsByName("menuCheckBox").length;
+      let take = $(":input:radio[name=radio_button]:checked").val();
+      console.log(take);
 
       for (let i = 0; i < orderListCnt; i++) {
         let orderItem = {};
@@ -271,7 +273,6 @@
           //결제가 실행되기 전에 수행되며, 주로 재고를 확인하는 로직이 들어갑니다.
           //주의 - 카드 수기결제일 경우 이 부분이 실행되지 않습니다.
           const pay_id = data.receipt_id;
-
           console.log("결제요청", data);
           // 서버로 결제 검증
           ajax({
@@ -283,6 +284,7 @@
               items: JSON.stringify(orderList),
               phone: formatted_phone_no,
               receipt_id: pay_id,
+              takeout: take,
             },
             success: function (data) {
               console.log("서버에서 응답 옴");
