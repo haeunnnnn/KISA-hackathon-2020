@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <title>Read Review</title>
+    <title>휴게소 바로 주문</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -53,15 +53,21 @@
         },
         success: function (data) {
             var result = JSON.parse(data);
-            var total = result[0];
-            var list = result.slice(1);
-            console.log("total : ",total.score);
-            console.log("list : ",list);
-            const div1 = document.getElementById("totalReviewData");
-            // 여기서 total 점수랑 list점수 디비에서 읽어서 가져오니까 이걸로 사용해서 그리세요
-            showTotalScore(String(total.score));
-            div1.innerHTML += `총 리뷰 ${list.length}개`;
-            showReview(list);
+            if(result.length == 0){
+                alert("휴게소에 리뷰가 없습니다.");
+                window.history.back();
+            }
+            else{
+                var total = result[0];
+                var list = result.slice(1);
+                console.log("total : ",total.score);
+                console.log("list : ",list);
+                const div1 = document.getElementById("totalReviewData");
+                // 여기서 total 점수랑 list점수 디비에서 읽어서 가져오니까 이걸로 사용해서 그리세요
+                showTotalScore(String(total.score));
+                div1.innerHTML += `총 리뷰 ${list.length}개`;
+                showReview(list);
+            }
         }
     });
 
