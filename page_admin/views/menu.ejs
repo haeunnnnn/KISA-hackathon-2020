@@ -12,76 +12,66 @@
 </head>
 
 <body id="reportsPage">
-    <div id="home">
-        <!-- 상단(타이틀,네비게이터) -->
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/home"><i class="fas fa-utensils" style="color:#ffff; font-size:25px"></i></a>
-                </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/admin"><i class="fas fa-home"></i> Home</a></li>
-                    </ul>
-                </div>
+    <!-- 상단(타이틀,네비게이터) -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/home"><i class="fas fa-utensils"
+                        style="color:#ffff; font-size:25px"></i></a>
             </div>
-        </nav>
-
-        <div class="container">
-            <div class="page-header">
-                <h1>휴게소 관리 페이지</h1>
-                <a><span onclick="window.location.href = '/admin'">주문내역</span></a>
-                <a><span onclick="window.location.href = '/menu'">메뉴관리</span></a>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/admin"><i class="fas fa-home"></i> Home</a></li>
+                </ul>
             </div>
-            <div>
-                <h3 style="display: inline;">메뉴 관리</h3>
-                <div class="selectbox" style="float:right">
-                    <select id='areaList' style="display: inline-flex;">
-                        <option value='all' selected='selected'>전체</option>
-                    </select>
-                    <!-- 추가는 조회되기 전까지 disable / 확인은 추가 버튼 누르기 전까지 disable -->
-                    <button class="btn btn-outline-danger btn-xs" onclick="addMenu()">추가</button>
-                </div>
-            </div>
-            <br>
-            <div class="well">
-                <div class="row">
-
-        <!-- 중단(내용) -->
-        <div>
-            <!-- 행(row) 시작 -->
-            <div>
-                <!-- 행 내용(row content) 시작 -->
-                <div style="overflow-x:auto;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th scope="col" style="width: 20%; text-align: center;">NO</th>
-                                <th scope="col" style="width: 30%;">FOOD NAME</th>
-                                <th scope="col" style="width: 25%; text-align: center;">FOOD COST</th>
-                                <th scope="col" style="width: 10%; text-align: center;"></th>
-                                <th scope="col" style="width: 15%; text-align: center;"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
         </div>
+    </nav>
 
-        <!-- 하단 -->
-        <footer>
-            <div>
+    <div class="container">
+        <div class="page-header">
+            <h3>휴게소 관리 페이지</h3>
+        </div>
+        <ul class="nav nav-tabs">
+            <li><a href="/admin">주문내역</a></li>
+            <li class="active"><a href="/menu">메뉴관리</a></li>
+        </ul><br>
+        <form>
+            <div class="input-group">
+                <select class="form-control" id="areaList" style="width: 30%; float: right;">
+                    <option value='all' selected='selected'>전체</option>
+                </select>
+              <div class="input-group-btn">
+                <button class="btn btn-primary" type="submit" onclick="addMenu()">
+                  추가
+                </button>
+              </div>
             </div>
-        </footer>
+          </form>   
+        <br>
+        <div class="well">
+            <div class="container">
+                <table class="table table-responsive" style="width: 90%;">
+                    <thead>
+                        <tr>
+                            <th>NO</thscope=>
+                            <th>FOOD NAME</th>
+                            <th>FOOD COST</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </body>
+
 </html>
 
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -106,12 +96,12 @@
         }
     })
 
-    
+
 
     // 셀렉트박스 리스트 아이템 붙이기
     function addSelectOption(data) {
         const selectItem = document.getElementById('areaList');
-        for(var i=0; i < data.length; i++) {
+        for (var i = 0; i < data.length; i++) {
             console.log(data[i]);
             var optionItem = document.createElement('option');
             optionItem.innerHTML = data[i].area_nm;
@@ -126,9 +116,9 @@
     const ajax = $.ajax;
     var area_nm = '';
     var food_code = '';
-    $('#areaList').change(function() {
+    $('#areaList').change(function () {
         area_nm = $('#areaList option:selected').val();
-        console.log('selected:',area_nm);
+        console.log('selected:', area_nm);
 
         clearTable();
         ajaxFunc(area_nm);
@@ -140,11 +130,11 @@
             url: 'adminShowMenuList',
             type: 'POST',
             data: {
-                area_nm : area_nm
+                area_nm: area_nm
             },
             success: function (data) {
                 console.log('draw table start!');
-                if(data.length != 0) {
+                if (data.length != 0) {
                     const jsonData = JSON.parse(data);
                     drawTable(jsonData);
                 }
@@ -161,19 +151,15 @@
             let flag, text;
             var tr = document.createElement('tr');
             var td0 = document.createElement('td');
-            td0.style.textAlign = "center";
             var td1 = document.createElement('td');
-            //td1.style.textAlign = "center";
             var td2 = document.createElement('td');
-            td2.style.textAlign = "center";
             var td3 = document.createElement('td');
-            td3.style.textAlign = "center";
 
-            td0.innerHTML = data[i].food_code.substr(7,3);
+            td0.innerHTML = data[i].food_code.substr(7, 3);
             td1.innerHTML = data[i].food_nm;
             td2.innerHTML = data[i].food_price;
-            td3.innerHTML = `<button class="btn btn-outline-danger btn-xs" style="height:auto; width:auto; float:right;" onclick="deleteMenu(this)">삭제</button>`;    // 눌르면 주문 상세내용 나옴
-            
+            td3.innerHTML = `<button class="btn btn-danger btn-xs" style="height:auto; width:auto; float:right;" onclick="deleteMenu(this)">삭제</button>`;    // 눌르면 주문 상세내용 나옴
+
             tr.appendChild(td0);
             tr.appendChild(td1);
             tr.appendChild(td2);
@@ -182,21 +168,21 @@
             oldChild.appendChild(tr);
         }
         // 일단 어거지로
-        food_code = data[data.length-1].food_code;
+        food_code = data[data.length - 1].food_code;
     }
 
     // 조회조건이 변경되면 테이블 밀어야함
     function clearTable() {
         const oldChild = document.querySelector('tbody');
         // 기존 테이블 내용 삭제
-        while ( oldChild.hasChildNodes() ) { 
-            oldChild.removeChild( oldChild.firstChild );
+        while (oldChild.hasChildNodes()) {
+            oldChild.removeChild(oldChild.firstChild);
         }
     }
 
     // 추가버튼 이벤트
     function addMenu() {
-        window.open(`./addMenuPopup?area_nm=${area_nm}&food_code=${food_code}`,"open","toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=800, height=400");
+        window.open(`./addMenuPopup?area_nm=${area_nm}&food_code=${food_code}`, "open", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=800, height=400");
     }
 
     // 삭제버튼 이벤트
@@ -210,9 +196,9 @@
                 area_name: area_nm,
                 food_name: food_name
             },
-            success: function(data) {
+            success: function (data) {
                 console.log(data);
-                if(data == 'Success') {
+                if (data == 'Success') {
                     alert('메뉴를 삭제했습니다.');
                     location.href = '/admin';
                 } else {
@@ -221,5 +207,5 @@
             }
         });
     }
-   
+
 </script>
