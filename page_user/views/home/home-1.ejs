@@ -117,10 +117,10 @@
             const results = JSON.parse(data);
             drawRestAreaMarker(results, map);
             for(var i=0;i<latlng.length; i++){
-                (function(i){
+                (function(x){
                     setTimeout(function(){
-                        map.setCenter(new naver.maps.LatLng(latlng[i].lat, latlng[i].lon));
-                        marker.setPosition(new naver.maps.LatLng(latlng[i].lat, latlng[i].lon));
+                        map.setCenter(new naver.maps.LatLng(latlng[x].lat, latlng[x].lon));
+                        marker.setPosition(new naver.maps.LatLng(latlng[x].lat, latlng[x].lon));
                         // T map 도로명 API
                         ajax({
                             method:"GET",
@@ -129,26 +129,26 @@
                             async : false,
                             data:{
                                 "appKey" : "l7xx81d8228c35324ed3be2ba79ed4c15a67",
-                                "lon" : latlng[i].lon,
-                                "lat" : latlng[i].lat,
+                                "lon" : latlng[x].lon,
+                                "lat" : latlng[x].lat,
                             },
                             success: function(response){
                                 
-                                var resultHeader, resultlinkPoints;
+                                let resultHeader, resultlinkPoints;
                                 
                                 resultHeader = response.resultData.header;
                                 resultlinkPoints = response.resultData.linkPoints;
                                 
                                 rName = resultHeader.roadName;
-                                console.log("rName : ",rName);
+                                console.log("i rName : ",i, " ", rName);
                                 document.getElementById('roadNm').innerHTML = rName;
-                                drawList(results, latlng[i]);
+                                drawList(results, latlng[x]);
                             },
                             error: function (request, status, error) {
                                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                             }
                         });
-                    },3000*i)
+                    },3000*x)
                 })(i);
             }
         }
