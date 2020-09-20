@@ -169,7 +169,12 @@
 
     // 추가버튼 이벤트
     function addMenu() {
-        window.open(`./addMenuPopup?area_nm=${area_nm}&food_code=${food_code}`, "open", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=700, height=600");
+        area_nm = $('#areaList option:selected').val();
+        if(area_nm === 'all') {
+            alert('휴게소를 선택해 주세요.');
+        } else {
+            window.open(`./addMenuPopup?area_nm=${area_nm}&food_code=${food_code}`, "open", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=700, height=600");
+        }
     }
 
     // 삭제버튼 이벤트
