@@ -148,8 +148,14 @@
         for (var i = 0; i < n; i++) {
             score_img += `<i class="fas fa-star fa${fontSize}" style="color: orange;"></i>`;
         }
-        if (f != 0.0) {
+        if (f !== 0.0) {
             score_img += `<i class="fas fa-star-half-alt fa${fontSize}" style="color: orange;"></i>`;
+            i = n+1;
+        } else {
+            i = n;
+        }
+        for(i ; i < 5; i++){
+            score_img += `<i class="far fa-star fa${fontSize}" style="color: orange;"></i>`;
         }
         score_img += `</td>`;
         return score_img;
