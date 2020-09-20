@@ -47,7 +47,38 @@ router.post("/requestRestAreaLatLong", function (req, res) {
 // 사용자 앱에서 휴게소 하나 선택시, 휴게소 정보 값 보내주기 - 휴게소 정보 화면(휴게소 정보)
 router.post("/requestRestAreaInfo", function (req, res) {
     const areaCode = req.body.area_code;
-    connection.query("SELECT * FROM restarea_info_tb WHERE area_code = ?", [areaCode], function (error, result, fields) {
+    const areaName = req.body.area_name;
+    connection.query(
+        `SELECT '-' AS area_code
+            , '-' AS area_nm
+            , '-' AS road_type
+            , '-' AS road_no
+            , AVG(score) AS road_nm
+            , '-' AS road_way
+            , '-' AS latitude
+            , '-' AS longitude
+            , '-' AS parking_space_cnt
+            , '-' AS maintenance_yn
+            , '-' AS lpg_yn
+            , '-' AS gas_yn
+            , '-' AS electric_yn
+            , '-' AS bus_transfer_yn
+            , '-' AS shelter_yn
+            , '-' AS restroom_yn
+            , '-' AS pharmacy_yn
+            , '-' AS nursing_room_yn
+            , '-' AS store_yn
+            , '-' AS restaurant_yn
+            , '-' AS area_pn
+        FROM review_info_tb
+        WHERE area_nm LIKE ?
+        GROUP BY area_nm
+        UNION ALL
+        SELECT * 
+        FROM restarea_info_tb 
+        WHERE area_code = ?`
+        , [areaName, areaCode]
+        , function (error, result, fields) {
         if (error) {
             throw error;
         } else {

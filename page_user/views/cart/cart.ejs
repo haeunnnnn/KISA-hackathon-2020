@@ -304,14 +304,14 @@
     // 장바구니 삭제
     $("#removeBtn").click(() => {
       // debugger;
-      let checkedMenu = $("input:checked");
+      let checkedMenu = $(":input:checkBox:checked");
       if (checkedMenu) {
-        $("input:checked").each(function () {
+        $(":input:checkBox:checked").each(function () {
           var unique = `${this.value}total`;
           var removedPrice = document.getElementById("" + unique + "").innerHTML;
           totalPrice -= removedPrice;
         });
-        $("input:checked").parentsUntil(".panel-group").remove(); // 장바구니 삭제
+        $(":input:checkBox:checked").parentsUntil(".panel-group").remove(); // 장바구니 삭제
         $(`#totalPrice`).text(totalPrice); // 삽입
       }
     });

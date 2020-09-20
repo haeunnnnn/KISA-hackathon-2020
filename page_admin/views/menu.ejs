@@ -144,7 +144,7 @@
 
             td0.innerHTML = data[i].food_code.substr(7, 3);
             td1.innerHTML = data[i].food_nm;
-            td2.innerHTML = data[i].food_price;
+            td2.innerHTML = numberWithCommas(data[i].food_price) + '원';
             td3.innerHTML = `<button class="btn btn-danger btn-xs" style="height:auto; width:auto; float:right;" onclick="deleteMenu(this)">삭제</button>`;    // 눌르면 주문 상세내용 나옴
 
             tr.appendChild(td0);
@@ -192,5 +192,15 @@
                 }
             }
         });
+    }
+
+    // 숫자 to 금액
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // 금액 to 숫자
+    function numberWithoutCommas(x) {
+        return x.toString().replace(",", '');
     }
 </script>
