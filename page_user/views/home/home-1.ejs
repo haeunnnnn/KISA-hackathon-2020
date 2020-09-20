@@ -250,23 +250,23 @@
         var markers = [],
             infoWindows = [];
 
-        for (var i in data) {
+        for (let i in data) {
 
-            var areaInfo = {
+            let areaInfo = {
                 name: data[i].area_nm,
                 code: data[i].area_code,
                 latitude: data[i].latitude,
                 longitude: data[i].longitude,
             }
 
-            var position = new naver.maps.LatLng(areaInfo.latitude, areaInfo.longitude);
+            let position = new naver.maps.LatLng(areaInfo.latitude, areaInfo.longitude);
 
-            var marker = new naver.maps.Marker({
+            let marker = new naver.maps.Marker({
                 map: map,
                 position: position,
             });
 
-            var infoWindow = new naver.maps.InfoWindow({
+            let infoWindow = new naver.maps.InfoWindow({
                 content:
                 `<div class="container text-left" style="width: 160px;">    
                         <table class="table table-hover">
@@ -274,16 +274,21 @@
                                 <td><strong>${areaInfo.name}휴게소</strong></td>
                             </tr>
                             <tr>    
-                                <td><div class="text-center">
-                                    <form action="/restAreaInfo">
-                                        <input style="display:none" id = "area_code" name = "area_code" value = ${areaInfo.code}>
-                                        <input type="submit" class="btn btn-info" value='휴게소정보'>
-                                    </form>
+                                <td>
+                                    <div class="text-center">
+                                        <button 
+                                            class="btn btn-info"
+                                            onClick="location.href='/restAreaInfo?area_code=${areaInfo.code}&area_nm=${areaInfo.name}'"
+                                        >
+                                        휴게소정보
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </table>    
                     </div>`
             });
+            console.log(areaInfo.code, areaInfo.name);
 
             markers.push(marker);
             infoWindows.push(infoWindow);
