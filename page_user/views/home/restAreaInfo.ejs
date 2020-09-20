@@ -56,22 +56,33 @@
 <script>
   const qs = getQueryStringObject();
   let areaCode = qs.area_code;
-  let areaName;
+  let areaName = qs.area_nm;
   // 휴게소 정보 읽어오기 ajax
+  console.log(areaCode, areaName);
   $.ajax({
     url: "/requestRestAreaInfo",
     type: "POST",
     data: {
       area_code: areaCode, // 여기로 휴게소 코드 넘겨 주어야 합니다
+      area_name: areaName
     },
-
     success: function (data) {
-      const results = JSON.parse(data);
-      areaName = results[0].area_nm;
-      console.log(results);
+      let temp = JSON.parse(data);
+      let results;
+      console.log(temp.length);
+      if(temp.length == 1) {
+        console.log('평점없어');
+        results = temp[0];
+        avgScore = '0.0';
+      } else {
+        console.log('평점있어');
+        results = temp[1];
+        avgScore = temp[0].road_nm;
+      }
+      console.log(results,avgScore);
       //drawInfoPage(results[0]);
-      drawTable(results[0]);
-      drawMap(results[0]);
+      drawTable(results, avgScore);
+      drawMap(results);
     },
   });
 
@@ -101,7 +112,7 @@
     }
     return b;
   }
-  function drawTable(results) {
+  function drawTable(results, avgscore) {
     const div1 = document.getElementById("restAreaInfoData");
     const conv_yn = [
       results["restroom_yn"],
@@ -133,7 +144,8 @@
                     </th>
                 <tr>
              </thead>`;
-    var score_img = drawStar("3.5");
+             console.log(avgscore);
+    var score_img = drawStar(avgscore);
     const tbody = `<tbody>
                 <tr>
                     <td><i class="fas fa-parking" style="color: Tomato;"></i></td>
