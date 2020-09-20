@@ -309,10 +309,11 @@
         $(":input:checkBox:checked").each(function () {
           var unique = `${this.value}total`;
           var removedPrice = document.getElementById("" + unique + "").innerHTML;
-          totalPrice -= removedPrice;
+          console.log(totalPrice, removedPrice);
+          totalPrice -= numberWithoutCommas(removedPrice);
         });
         $(":input:checkBox:checked").parentsUntil(".panel-group").remove(); // 장바구니 삭제
-        $(`#totalPrice`).text(totalPrice); // 삽입
+        $(`#totalPrice`).text(numberWithCommas(totalPrice)); // 삽입
       }
     });
   });

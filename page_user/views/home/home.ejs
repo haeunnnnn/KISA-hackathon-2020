@@ -176,10 +176,12 @@
                             </tr>
                             <tr>    
                                 <td><div class="text-center">
-                                    <form action="/restAreaInfo">
-                                        <input style="display:none" id = "area_code" name = "area_code" value = ${areaInfo.code}>
-                                        <input type="submit" class="btn btn-info" value='휴게소정보'>
-                                    </form>
+                                    <button 
+                                        class="btn btn-info"
+                                        onClick="location.href='/restAreaInfo?area_code=${areaInfo.code}&area_nm=${areaInfo.name}'"
+                                    >
+                                    휴게소정보
+                                    </button>
                                 </td>
                             </tr>
                         </table>    
