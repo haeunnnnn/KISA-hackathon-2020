@@ -188,18 +188,26 @@
 
   function drawStar(avg_score) {
     //var avg_score = "3.2"; // DB에서 평균평점 받아와야함
-    var n;
-    var f;
+    let n;
+    let f;
     avg_score = avg_score.split("."); // [ 3, 5]
     n = parseInt(avg_score[0]); // 3
     f = parseFloat("0." + avg_score[1]); // 0.5
-    var score_img = `<td>`;
-    for (var i = 0; i < n; i++) {
+    let score_img = `<td>`;
+    let i;
+    for (i = 0; i < n; i++) {
       score_img += `<i class="fas fa-star" style="color: Tomato;"></i>`;
     }
-    if (f != 0.0) {
+    if (f !== 0.0) {
       score_img += `<i class="fas fa-star-half-alt" style="color: Tomato;"></i>`;
+      i = n+1;
+    } else {
+      i = n;
     }
+    for(i ; i < 5; i++){
+      score_img += `<i class="far fa-star" style="color: Tomato;"></i>`;
+    }
+
     score_img += `</td>`;
     return score_img;
   }
